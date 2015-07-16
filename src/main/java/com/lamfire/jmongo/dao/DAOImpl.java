@@ -27,13 +27,13 @@ import com.mongodb.WriteResult;
 public class DAOImpl<T, K> implements DAO<T, K> {
 	private static final Logger LOGGER = Logger.getLogger(DAOImpl.class);
 	protected Class<T> entityClazz;
-    protected String colName;
+    protected String kind;
 	protected Datastore ds;
 
-    public DAOImpl(Mongo mongo, Mapping mapping, String dbName,Class<T> entityClass,String colName) {
+    public DAOImpl(Mongo mongo, Mapping mapping, String dbName,Class<T> entityClass,String kind) {
         initDS(mongo, mapping, dbName);
         initType(entityClass);
-        this.colName = colName;
+        this.kind = kind;
         ensureIndexes();
     }
 	
@@ -62,7 +62,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 		}
 		LOGGER.info("[MAPPING]:" + type.getName());
         MappedClass mappedClass = ds.getMapper().addMappedClass(type);
-        this.colName = mappedClass.getCollectionName();
+        this.kind = mappedClass.getCollectionName();
 	}
 	protected void initDS(Mongo mon, Mapping mor, String db) {
 		ds = new DatastoreImpl(mor, mon, db);
@@ -78,11 +78,11 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	
 	/** The underlying collection for this DAO */
 	public DBCollection getCollection() {
-		return ds.getCollection(colName);
+		return ds.getCollection(kind);
 	}
 
 	public Query<T> createQuery() {
-		return ds.createQuery(entityClazz,colName);
+		return ds.createQuery(kind,entityClazz);
 	}
 	
 
@@ -95,11 +95,16 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	}
 
 	public Key<T> save(T entity) {
-		return ds.save(entity,colName);
+		return ds.save(kind,entity);
 	}
 
-	public Key<T> save(T entity, WriteConcern wc) {
-		return ds.save(entity, wc,colName);
+
+    public Key<T> insert(T entity) {
+        return ds.insert(kind,entity);
+    }
+
+    public Key<T> save(T entity, WriteConcern wc) {
+		return ds.save(kind,entity, wc);
 	}
 
 	public UpdateResults<T> update(Query<T> q, UpdateOperations<T> ops) {
@@ -127,31 +132,28 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	}
 
 	public WriteResult delete(T entity) {
-		return ds.delete(entity,colName);
+		return ds.delete(kind,entity);
 	}
 
 
 	public WriteResult delete(T entity, WriteConcern wc) {
-		return ds.delete(entity, wc,colName);
+		return ds.delete(kind,entity, wc);
 	}
 
 	public WriteResult deleteById(K id) {
-		return ds.delete(entityClazz, id);
+		return ds.delete(kind,entityClazz,id);
 	}
 
 	public WriteResult deleteByQuery(Query<T> q) {
 		return ds.delete(q);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.google.code.jmongo.DAO#get(K)
-	 */
+
 	public T get(K id) {
-		return ds.get(entityClazz,id,colName);
+		return ds.get(kind,entityClazz,id);
 	}
 
 	public T get(K id, String... fields) {
-		return ds.get(entityClazz, id,colName,fields);
+		return ds.get(kind,entityClazz, id,fields);
 	}
 	
 	public List<T> gets(Iterable<K> ids) {
@@ -160,12 +162,12 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	
 
 	public List<K> findIds(String key, Object value) {
-		return (List<K>) keysToIds(ds.find(entityClazz, key, value,colName).asKeyList());
+		return (List<K>) keysToIds(ds.find(kind,entityClazz, key, value).asKeyList());
 	}
 	
 
 	public List<K> findIds() {
-		return (List<K>) keysToIds(ds.find(entityClazz,colName).asKeyList());
+		return (List<K>) keysToIds(ds.find(kind,entityClazz).asKeyList());
 	}
 	
 	/* (non-Javadoc)
@@ -177,7 +179,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	
 
 	public boolean exists(String key, Object value) {
-		return exists(ds.find(entityClazz, key, value,colName));
+		return exists(ds.find(kind,entityClazz, key, value));
 	}
 	
 
@@ -186,11 +188,11 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	}
 
 	public long count() {
-		return ds.getCount(entityClazz,colName);
+		return ds.getCount(kind);
 	}
 
 	public long count(String key, Object value) {
-		return count(ds.find(entityClazz, key, value,colName));
+		return count(ds.find(kind,entityClazz, key, value));
 	}
 
 	public long count(Query<T> q) {
@@ -198,7 +200,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	}
 
 	public T findOne(String key, Object value) {
-		return ds.find(entityClazz, key, value,colName).get();
+		return ds.find(kind,entityClazz, key, value).get();
 	}
 
 	public T findOne(Query<T> q) {
@@ -218,23 +220,23 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	}
 	
 	public void ensureIndexes() {
-		ds.ensureIndexes(entityClazz,colName);
+		ds.ensureIndexes(kind,entityClazz);
 	}
 
-	public T incAndGet(K id, String fieldName) {
-		Query<T> q = this.ds.find(entityClazz, "_id", id,colName);
+	public T incrementAndGet(K id, String fieldName) {
+		Query<T> q = this.ds.find(kind,entityClazz, "_id", id);
 		UpdateOperations<T> uOps = this.ds.createUpdateOperations(entityClazz).inc(fieldName);
 		return this.ds.findAndModify(q, uOps);
 	}
 
-	public T decAndGet(K id, String fieldName) {
-		Query<T> q = this.ds.find(entityClazz, "_id", id,colName);
+	public T decrementAndGet(K id, String fieldName) {
+		Query<T> q = this.ds.find(kind,entityClazz, "_id", id);
 		UpdateOperations<T> uOps = this.ds.createUpdateOperations(entityClazz).dec(fieldName);
 		return this.ds.findAndModify(q, uOps);
 	}
 	
-	public T incAndGet(K id, String fieldName,String ... includeFields) {
-		Query<T> q = this.ds.find(entityClazz, "_id", id,colName);
+	public T incrementAndGet(K id, String fieldName,String ... includeFields) {
+		Query<T> q = this.ds.find(kind,entityClazz, "_id", id);
 		for(String f : includeFields){
 			q.includeFields(f);
 		}
@@ -242,8 +244,8 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 		return this.ds.findAndModify(q, uOps);
 	}
 
-	public T decAndGet(K id, String fieldName,String ... includeFields) {
-		Query<T> q = this.ds.find(entityClazz, "_id", id,colName);
+	public T decrementAndGet(K id, String fieldName,String ... includeFields) {
+		Query<T> q = this.ds.find(kind,entityClazz, "_id", id);
 		for(String f : includeFields){
 			q.includeFields(f);
 		}
@@ -251,28 +253,26 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 		return this.ds.findAndModify(q, uOps);
 	}
 
-	public void inc(K id, String fieldName) {
+	public void increment(K id, String fieldName) {
 		UpdateOperations<T> uOps = this.ds.createUpdateOperations(entityClazz).inc(fieldName);
 		Key<T> key = new Key<T>(entityClazz, id);
-		this.ds.update(key, uOps,colName);
+		this.ds.update(kind,key, uOps);
 	}
 
-	public void dec(K id, String fieldName) {
+	public void decrement(K id, String fieldName) {
 		UpdateOperations<T> uOps = this.ds.createUpdateOperations(entityClazz).dec(fieldName);
 		Key<T> key = new Key<T>(entityClazz, id);
-		this.ds.update(key, uOps,colName);
+		this.ds.update(kind,key, uOps);
 	}
 
-	@Override
-	public void inc(K id, String fieldName, Number val) {
+	public void increment(K id, String fieldName, Number val) {
 		UpdateOperations<T> uOps = this.ds.createUpdateOperations(entityClazz).inc(fieldName,val);
 		Key<T> key = new Key<T>(entityClazz, id);
-		this.ds.update(key, uOps,colName);
+		this.ds.update(kind,key, uOps);
 	}
 
-	@Override
-	public T incAndGet(K id, String fieldName, Number val) {
-		Query<T> q = this.ds.find(entityClazz, "_id", id,colName);
+	public T incrementAndGet(K id, String fieldName, Number val) {
+		Query<T> q = this.ds.find(kind,entityClazz, "_id", id);
 		UpdateOperations<T> uOps = this.ds.createUpdateOperations(entityClazz).inc(fieldName,val);
 		return this.ds.findAndModify(q, uOps);
 	}

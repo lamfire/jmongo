@@ -2,30 +2,25 @@ package com.demo.jmongo.test;
 
 import com.lamfire.utils.RandomUtils;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 public class TestDataReader implements Runnable{
-	private int count = 1000;
+	private AtomicInteger count = new AtomicInteger();
 	
 	public TestDataReader(){
 		
 	}
 
-	public TestDataReader(int count) {
-		this.count = count;
-	}
-
 	public int getCount() {
-		return count;
-	}
-
-	public void setCount(int count) {
-		this.count = count;
+		return count.get();
 	}
 
 	@Override
 	public void run() {
 		long begin = System.currentTimeMillis();
-		for (int i=0;i<count;i++) {
+		while (true) {
 			read();
+            int i = count.getAndIncrement();
 			if (i % 100 == 0) {
 				System.out.println("[QUERY (" + i + ")]: time:" + (System.currentTimeMillis() - begin));
 				begin = System.currentTimeMillis();

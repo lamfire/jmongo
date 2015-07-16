@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.query;
 
 import java.util.ArrayList;
@@ -13,10 +10,7 @@ import com.lamfire.jmongo.mapping.Mapper;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-/**
- * 
- * @author Scott Hernandez
- */
+
 @SuppressWarnings("unchecked")
 public class UpdateOpsImpl<T> implements UpdateOperations<T> {
 	Map<String, Map<String, Object>> ops = new HashMap<String, Map<String, Object>>();

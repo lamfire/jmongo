@@ -11,29 +11,32 @@ import com.lamfire.jmongo.GroupBy;
 import com.lamfire.json.JSON;
 import com.lamfire.jmongo.Key;
 import com.lamfire.jmongo.query.Query;
+import com.lamfire.utils.Asserts;
 import com.lamfire.utils.Printers;
 import com.lamfire.utils.RandomUtils;
+import com.lamfire.utils.Threads;
+import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 
 public class UserTest {
 
 	static UserDAO dao = new UserDAO("User1");
     static AtomicInteger ids = new AtomicInteger();
-	public static Long insertRandom() {
+	public static String insertRandom() {
 		try {
 			double x = Double.valueOf(RandomUtils.nextInt(100) +"." + (10000) +RandomUtils.nextInt(99999) );
-			double y = Double.valueOf((100+RandomUtils.nextInt(100)) +"." + (10000) +RandomUtils.nextInt(99999) );
+			double y = Double.valueOf((RandomUtils.nextInt(180)) +"." + (10000) +RandomUtils.nextInt(99999) );
 			User user = new User();
 			user.setAge(RandomUtils.nextInt(99));
-			user.setUsername(String.valueOf(ids.incrementAndGet()));
+			user.setUsername(String.format("%05d", ids.incrementAndGet()));
 			user.setPostion(x, y);
 			user.setPassword("password" + String.valueOf(10000 + RandomUtils.nextInt(9999)));
-			Key<User> key = dao.save(user,WriteConcern.MAJORITY);
-			return (Long) key.getId();
+			Key<User> key = dao.insert(user);
+			return (String) key.getId();
 		} catch (Exception e) {
-
+            e.printStackTrace();
 		}
-		return -1l;
+		return null;
 	}
 
 	public static void batInsert(int count) {
@@ -94,8 +97,12 @@ public class UserTest {
 		Printers.print(user);
 	}
 
-	public static void main(String[] args) {
-		//batInsert(100);
+    public static void clear(){
+        dao.deleteByQuery(dao.createQuery());
+    }
+	public static void test() {
+        clear();
+		batInsert(100);
 		// System.out.println(countUsers());
 		queryAll();
 
@@ -108,25 +115,62 @@ public class UserTest {
 //		list.add(5730l);
 //		list.add(2l);
 //		Printers.printAsJson(dao.createQuery().field("_id").in(list).asList());
-		
-		Printers.print(dao.group(new GroupBy("age","username").count()).asList());
-		System.out.println(countUsers());
-		near();
-		//get();
-		List<String> ids = new ArrayList<String>();
-		ids.add(""+12);
-		ids.add(""+13);
-		ids.add(""+14);
-		
-		List<User> users = dao.createQuery().field("_id").in(ids).includeFields("password").asList();
-		System.out.println(users.size());
 
-        users  = dao.createQuery().field("age").equal(59).asList();
+        List<DBObject> groupList = dao.group(new GroupBy("age", "username").count()).asList();
+		Printers.print(groupList);
+
+        int ageCountMax = 0;
+        int maxAge = 0;
+        for(DBObject o : groupList){
+            int count = (Integer)o.get("count");
+            if(count > ageCountMax){
+                ageCountMax = count;
+                maxAge = (Integer)((DBObject)o.get("_id")).get("age");
+            }
+        }
+
+        System.out.println("====================================> age count max : age=" + maxAge + ",count=" + ageCountMax);
+
+        System.out.println("====================================> count :");
+		System.out.println(countUsers());
+
+        System.out.println("====================================> near :");
+		near();
+
+
+        System.out.println("====================================> in query :");
+		List<String> ids = new ArrayList<String>();
+		ids.add("00012");
+        ids.add("00013");
+        ids.add("00014");
+		List<User> users = dao.createQuery().field("_id").in(ids).includeFields("password").asList();
         for(User u : users){
             System.out.println(JSON.toJSONString(u));
         }
 
-        User user =dao.get("88");
+        System.out.println("====================================> age="+maxAge+" : " + ageCountMax);
+        users  = dao.createQuery().field("age").equal(maxAge).asList();
+        for(User u : users){
+            System.out.println(JSON.toJSONString(u));
+            Asserts.equalsAssert(u.getAge(),maxAge);
+        }
+        Asserts.equalsAssert(ageCountMax,users.size());
+
+        System.out.println("====================================> get 00088 :");
+        User user =dao.get("00088");
         System.out.println(JSON.toJSONString(user));
+        Asserts.equalsAssert(user.getUsername(),"00088");
+
+        System.out.println("====================================> delete 00088 :");
+        dao.deleteById("00088");
+
+        user =dao.get("00088");
+        Asserts.nullAssert(user);
+
+        System.out.println("count :" + countUsers());
 	}
+
+    public static void main(String[] args) {
+        test();
+    }
 }

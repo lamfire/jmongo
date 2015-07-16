@@ -130,18 +130,13 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return delete(createQuery(clazz).filter(Mapper.ID_KEY, id), wc);
 	}
 
-    public <T, V> WriteResult delete(Class<T> clazz, V id, WriteConcern wc,String colName) {
-        return delete(createQuery(clazz,colName).filter(Mapper.ID_KEY, id), wc);
+    public <T, V> WriteResult delete(String kind,Class<T> clazz, V id, WriteConcern wc) {
+        return delete(createQuery(kind,clazz).filter(Mapper.ID_KEY, id), wc);
     }
 
 	public <T, V> WriteResult delete(Class<T> clazz, V id) {
 		return delete(clazz, id, getWriteConcern(clazz));
 	}
-
-    @Override
-    public <T, V> WriteResult delete(Class<T> clazz, V id, String colName) {
-        return delete(clazz, id, getWriteConcern(clazz),colName);
-    }
 
     public <T, V> WriteResult delete(Class<T> clazz, Iterable<V> ids) {
 		Query<T> q = find(clazz).disableValidation().filter(Mapper.ID_KEY + " in", ids);
@@ -151,11 +146,6 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 	public <T> WriteResult delete(T entity) {
 		return delete(entity, getWriteConcern(entity));
 	}
-
-    @Override
-    public <T> WriteResult delete(T entity, String colName) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
-    }
 
     public <T> WriteResult delete(T entity, WriteConcern wc) {
 		entity = ProxyHelper.unwrap(entity);
@@ -170,14 +160,13 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		}
 	}
 
-    @Override
-    public <T> WriteResult delete(T entity, WriteConcern wc, String colName) {
+    public <T> WriteResult delete(String kind,T entity, WriteConcern wc) {
         entity = ProxyHelper.unwrap(entity);
         if (entity instanceof Class<?>)
             throw new MappingException("Did you mean to delete all documents? -- delete(ds.createQuery(???.class))");
         try {
             Object id = getId(entity);
-            return delete(entity.getClass(), id, wc,colName);
+            return delete(kind,entity.getClass(), id, wc);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -261,7 +250,7 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		}
 	}
 
-    protected <T> void ensureIndex(Class<T> clazz, String name, BasicDBObject fields, boolean unique, boolean dropDupsOnCreate, boolean background, boolean sparse,String colName) {
+    protected <T> void ensureIndex(String kind,Class<T> clazz, String name, BasicDBObject fields, boolean unique, boolean dropDupsOnCreate, boolean background, boolean sparse) {
         BasicDBObjectBuilder keyOpts = new BasicDBObjectBuilder();
         if (name != null && name.length() > 0) {
             keyOpts.add("name", name);
@@ -277,7 +266,7 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
         if (sparse)
             keyOpts.add("sparse", true);
 
-        DBCollection dbColl = getCollection(colName);
+        DBCollection dbColl = getCollection(kind);
 
         BasicDBObject opts = (BasicDBObject) keyOpts.get();
         if (opts.isEmpty()) {
@@ -314,14 +303,14 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 	}
 	
 	protected void ensureIndexes(MappedClass mc, boolean background) {
-		ensureIndexes(mc, background, new ArrayList<MappedClass>(), new ArrayList<MappedField>(),mc.getCollectionName());
+		ensureIndexes(mc.getCollectionName(),mc, background, new ArrayList<MappedClass>(), new ArrayList<MappedField>());
 	}
 
-    protected void ensureIndexes(MappedClass mc, boolean background,String colName) {
-        ensureIndexes(mc, background, new ArrayList<MappedClass>(), new ArrayList<MappedField>(),colName);
+    protected void ensureIndexes(String kind,MappedClass mc, boolean background) {
+        ensureIndexes(kind,mc, background, new ArrayList<MappedClass>(), new ArrayList<MappedField>());
     }
 	
-	protected void ensureIndexes(MappedClass mc, boolean background, ArrayList<MappedClass> parentMCs, ArrayList<MappedField> parentMFs,String colName) {
+	protected void ensureIndexes(String kind,MappedClass mc, boolean background, ArrayList<MappedClass> parentMCs, ArrayList<MappedField> parentMFs) {
 		if (parentMCs.contains(mc))
 			return;
 		
@@ -337,7 +326,7 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 				if (idx != null && idx.value() != null && idx.value().length > 0)
 					for(Index index : idx.value()) {
 						BasicDBObject fields = QueryImpl.parseFieldsString(index.value(), mc.getClazz(), mapper, !index.disableValidation());
-						ensureIndex(mc.getClazz(), index.name(), fields, index.unique(), index.dropDups(), index.background() ? index.background() : background, index.sparse() ? index.sparse() : false ,colName);
+						ensureIndex(kind,mc.getClazz(), index.name(), fields, index.unique(), index.dropDups(), index.background() ? index.background() : background, index.sparse() ? index.sparse() : false);
 					}
 			}
 		//Ensure indexes from field annotations, and embedded entities
@@ -352,7 +341,7 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 				
 				field.append(mf.getNameToStore());
 				
-				ensureIndex(indexedClass, index.name(), new BasicDBObject(field.toString(), index.value().toIndexValue()), index.unique(), index.dropDups(), index.background() ? index.background() : background , index.sparse() ? index.sparse() : false,colName);
+				ensureIndex(kind,indexedClass, index.name(), new BasicDBObject(field.toString(), index.value().toIndexValue()), index.unique(), index.dropDups(), index.background() ? index.background() : background , index.sparse() ? index.sparse() : false);
 			}
 			
 			if (!mf.isTypeMongoCompatible() && !mf.hasAnnotation(Reference.class) && !mf.hasAnnotation(Serialized.class)) {
@@ -360,7 +349,7 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 				ArrayList<MappedField> newParents = (ArrayList<MappedField>) parentMFs.clone();
 				newParentClasses.add(mc);
 				newParents.add(mf);
-				ensureIndexes(mapper.getMappedClass(mf.isSingleValue() ? mf.getType() : mf.getSubClass()), background, newParentClasses, newParents,colName);
+				ensureIndexes(kind,mapper.getMappedClass(mf.isSingleValue() ? mf.getType() : mf.getSubClass()), background, newParentClasses, newParents);
 			}
 		}
 	}
@@ -369,9 +358,8 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		ensureIndexes(clazz, false);
 	}
 
-    @Override
-    public <T> void ensureIndexes(Class<T> clazz, String colName) {
-        ensureIndexes(clazz, false,colName);
+    public <T> void ensureIndexes(String kind,Class<T> clazz) {
+        ensureIndexes(kind,clazz, false);
     }
 
     public <T> void ensureIndexes(Class<T> clazz, boolean background) {
@@ -379,9 +367,9 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		ensureIndexes(mc, background);
 	}
 
-    public <T> void ensureIndexes(Class<T> clazz, boolean background,String colName) {
+    public <T> void ensureIndexes(String kind,Class<T> clazz, boolean background) {
         MappedClass mc = mapper.getMappedClass(clazz);
-        ensureIndexes(mc, background,colName);
+        ensureIndexes(kind,mc, background);
     }
 
 	public void ensureIndexes() {
@@ -433,17 +421,12 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 	}
 
 	private <T> Query<T> queryByExample(DBCollection coll, T example) {
-		//TODO: think about remove className from baseQuery param below.
 		return new QueryImpl<T>((Class<T>) example.getClass(), coll, this, entityToDBObj(example, new HashMap<Object, DBObject>()));
 		
 	}
 	public <T> Query<T> createQuery(Class<T> clazz) {
 		return new QueryImpl<T>(clazz, getCollection(clazz), this);
 	}
-
-    public <T> Query<T> createQuery(Class<T> clazz,String colName) {
-        return new QueryImpl<T>(clazz, getCollection(colName), this);
-    }
 
     public <T> Query<T> createQuery(Class<T> kind, DBObject q) {
 		return new QueryImpl<T>(kind, getCollection(kind), this, q);
@@ -457,18 +440,12 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return new QueryImpl<T>(clazz, db.getCollection(kind), this);
 	}
 
-	public <T> Query<T> find(String kind, Class<T> clazz) {
-		return new QueryImpl<T>(clazz, getCollection(kind), this);
-	}
-	
-
 	public <T> Query<T> find(Class<T> clazz) {
 		return createQuery(clazz);
 	}
 
-    @Override
-    public <T> Query<T> find(Class<T> clazz, String colName) {
-        return createQuery(clazz,colName);
+    public <T> Query<T> find(String kind,Class<T> clazz) {
+        return createQuery(kind,clazz);
     }
 
 
@@ -478,8 +455,8 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 	}
 
     @Override
-    public <T, V> Query<T> find(Class<T> clazz, String property, V value, String colName) {
-        Query<T> query = createQuery(clazz,colName);
+    public <T, V> Query<T> find(String kind,Class<T> clazz,String property, V value) {
+        Query<T> query = createQuery(kind,clazz);
         return query.filter(property, value);
     }
 
@@ -608,28 +585,22 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return find(getCollection(clazz).getName(), clazz, Mapper.ID_KEY, id, 0, 1, true).get();
 	}
 
-    @Override
-    public <T, V> T get(Class<T> clazz, V id, String colName) {
-        return find(getCollection(colName).getName(), clazz, Mapper.ID_KEY, id, 0, 1, true).get();
-    }
-
     public <T, V> T get(Class<T> clazz, V id,String ... fields) {
 		return find(getCollection(clazz).getName(), clazz, Mapper.ID_KEY, id, 0, 1, true,fields).get();
 	}
 
-    @Override
-    public <T, V> T get(Class<T> clazz, V id, String colName, String... fields) {
-        return find(getCollection(colName).getName(), clazz, Mapper.ID_KEY, id, 0, 1, true,fields).get();
+    public <T, V> T get(String kind,Class<T> clazz, V id, String... fields) {
+        return find(getCollection(kind).getName(), clazz, Mapper.ID_KEY, id, 0, 1, true,fields).get();
     }
 
 
-    public <T> T getByKey(Class<T> clazz, Key<T> key) {
-		String kind = mapper.getCollectionName(clazz);
+    public <T> T getByKey(String kind,Class<T> clazz, Key<T> key) {
 		String keyKind = mapper.updateKind(key);
-		if (!kind.equals(keyKind))
+		if (!kind.equals(keyKind)){
 			throw new RuntimeException("collection names don't match for key and class: " + kind + " != " + keyKind);
+        }
 		
-		return get(clazz, key.getId());
+		return get(kind,clazz, key.getId());
 	}
 	
 	public <T> T get(T entity) {
@@ -680,12 +651,6 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 	public <T> long getCount(Class<T> clazz) {
 		return getCollection(clazz).count();
 	}
-
-    @Override
-    public <T> long getCount(Class<T> clazz, String colName) {
-        return getCollection(colName).count();
-    }
-
 
     public long getCount(String kind) {
 		return getCollection(kind).count();
@@ -788,17 +753,18 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return insert(dbColl, entity, wc);
 	}
 
-	protected <T> Key<T> insert(DBCollection dbColl, T entity, WriteConcern wc) {
+	public <T> Key<T> insert(DBCollection dbColl, T entity, WriteConcern wc) {
 		LinkedHashMap<Object, DBObject> involvedObjects = new LinkedHashMap<Object, DBObject>();
 		DBObject dbObj = entityToDBObj(entity, involvedObjects);
-		WriteResult wr;
-		if (wc == null)
-			wr = dbColl.insert(dbObj);
-		else
-			wr = dbColl.insert(dbObj, wc);
 
-		throwOnError(wc, wr);
+        WriteResult wr = null;
 
+        if (wc == null){
+            wr = dbColl.insert(dbObj,WriteConcern.MAJORITY);
+        }else{
+            wr = dbColl.insert(dbObj, wc);
+        }
+        throwOnError(wc, wr);
 		return postSaveGetKey(entity, dbObj, dbColl, involvedObjects);
 
 	}
@@ -847,26 +813,31 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return savedKeys;
 	}
 
+    public <T> Iterable<Key<T>> save(String kind, T... entities) {
+        ArrayList<Key<T>> savedKeys = new ArrayList<Key<T>>();
+        for (T ent : entities){
+            savedKeys.add(save(kind,ent));
+        }
+        return savedKeys;
+    }
 
-    protected <T> Key<T> save(DBCollection dbColl, T entity, WriteConcern wc) {
+
+    protected synchronized  <T> Key<T> save(DBCollection dbColl, T entity, WriteConcern wc) {
 		MappedClass mc = mapper.getMappedClass(entity);
-		if (mc.getAnnotation(NotSaved.class) != null)
+		if (mc.getAnnotation(NotSaved.class) != null){
 			throw new MappingException("Entity type: " + mc.getClazz().getName() + " is marked as NotSaved which means you should not try to save it!");
-
-		WriteResult wr = null;
-		
+        }
 		//involvedObjects is used not only as a cache but also as a list of what needs to be called for life-cycle methods at the end.
 		LinkedHashMap<Object, DBObject> involvedObjects = new LinkedHashMap<Object, DBObject>();
 		DBObject dbObj = entityToDBObj(entity, involvedObjects);
 
 		//try to do an update if there is a @Version field
-		wr = tryVersionedUpdate(dbColl, entity, dbObj, wc, db, mc);
-		
-		if(wr == null)
-			if (wc == null)
-				wr = dbColl.save(dbObj);
-			else
-				wr = dbColl.save(dbObj, wc);
+		WriteResult wr = null;
+        if (wc == null){
+            wr = dbColl.save(dbObj);
+        }else{
+            wr = dbColl.save(dbObj, wc);
+        }
 
 		throwOnError(wc, wr);
 		return postSaveGetKey(entity, dbObj, dbColl, involvedObjects);
@@ -911,8 +882,9 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 	protected void throwOnError(WriteConcern wc, WriteResult wr) {
 		if ( wc == null && wr.getLastConcern() == null) {
 			CommandResult cr = wr.getLastError();
-			if (cr != null && cr.getErrorMessage() != null && cr.getErrorMessage().length() > 0)
+			if (cr != null && cr.getErrorMessage() != null && cr.getErrorMessage().length() > 0) {
 				cr.throwOnError();
+            }
 		}
 	}
 	
@@ -932,17 +904,10 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return save(dbColl, entity, wc);
 	}
 
-    @Override
-    public <T> Key<T> save(T entity, WriteConcern wc, String colName) {
+    public <T> Key<T> save(String kind,T entity, WriteConcern wc) {
         entity = ProxyHelper.unwrap(entity);
-        DBCollection dbColl = getCollection(colName);
+        DBCollection dbColl = getCollection(kind);
         return save(dbColl, entity, wc);
-    }
-
-    public <T> Key<T> save(T entity,String colName) {
-        entity = ProxyHelper.unwrap(entity);
-        DBCollection dbColl = getCollection(colName);
-        return save(dbColl, entity, getWriteConcern(entity));
     }
 
 	public <T> UpdateOperations<T> createUpdateOperations(Class<T> clazz) {
@@ -988,12 +953,11 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return updateFirst(createQuery(clazz).disableValidation().filter(Mapper.ID_KEY, key.getId()), ops);
 	}
 
-    @Override
-    public <T> UpdateResults<T> update(Key<T> key, UpdateOperations<T> ops, String colName) {
+    public <T> UpdateResults<T> update(String kind,Key<T> key, UpdateOperations<T> ops) {
         Class<T> clazz = (Class<T>) key.getKindClass();
         if (clazz == null)
             clazz = (Class<T>) mapper.getClassFromKind(key.getKind());
-        return updateFirst(createQuery(clazz,colName).disableValidation().filter(Mapper.ID_KEY, key.getId()), ops);
+        return updateFirst(createQuery(kind,clazz).disableValidation().filter(Mapper.ID_KEY, key.getId()), ops);
     }
 
     public <T> UpdateResults<T> update(Query<T> query, UpdateOperations<T> ops) {
@@ -1029,18 +993,19 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return res;
 	}
 	
-	public <T> Key<T> merge(T entity) {
-		return merge(entity, getWriteConcern(entity));
+	public <T> Key<T> merge(String kind,T entity) {
+		return merge(kind,entity, getWriteConcern(entity));
 	}
 
-	public <T> Key<T> merge(T entity, WriteConcern wc) {
+	public <T> Key<T> merge(String kind,T entity, WriteConcern wc) {
 		LinkedHashMap<Object, DBObject> involvedObjects = new LinkedHashMap<Object, DBObject>();
 		DBObject dbObj = mapper.toDBObject(entity, involvedObjects);
 		Key<T> key = getKey(entity);
 		entity = ProxyHelper.unwrap(entity);
 		Object id = getId(entity);
-		if (id == null)
+		if (id == null){
 			throw new MappingException("Could not get id for " + entity.getClass().getName());
+        }
 
 		//remove (immutable) _id field for update.
 		dbObj.removeField(Mapper.ID_KEY);
@@ -1048,7 +1013,7 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		WriteResult wr = null;
 		
 		MappedClass mc = mapper.getMappedClass(entity);
-		DBCollection dbColl = getCollection(entity);
+		DBCollection dbColl = getCollection(kind);
 		
 		//try to do an update if there is a @Version field
 		wr = tryVersionedUpdate(dbColl, entity, dbObj, wc, db, mc);
@@ -1133,8 +1098,9 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 	public <T> T findAndDelete(Query<T> query) {
 		DBCollection dbColl = ((QueryImpl<T>) query).getCollection();
 		//TODO remove this after testing.
-		if(dbColl == null)
+		if(dbColl == null){
 			dbColl = getCollection(((QueryImpl<T>) query).getEntityClass());
+        }
 
 		QueryImpl<T> qi = ((QueryImpl<T>) query);
 		EntityCache cache = createCache();

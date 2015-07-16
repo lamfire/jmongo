@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.mapping;
 
 import java.util.ArrayList;
@@ -8,7 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.DatastoreImpl;
 import com.lamfire.jmongo.Key;
 import com.lamfire.jmongo.annotations.Reference;

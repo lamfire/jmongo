@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 import org.bson.BSONEncoder;
 import org.bson.BasicBSONEncoder;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.EntityInterceptor;
 import com.lamfire.jmongo.Key;
 import com.lamfire.jmongo.annotations.Converters;

@@ -17,20 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 import com.lamfire.jmongo.annotations.*;
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.EntityInterceptor;
 import com.lamfire.jmongo.mapping.validation.MappingValidator;
 import com.lamfire.jmongo.utils.ReflectionUtils;
 import com.mongodb.DBObject;
 
-/**
- * Represents a mapped class between the MongoDB DBObject and the java POJO.
- * 
- * This class will validate classes to make sure they meet the requirement for
- * persistence.
- * 
- * @author Scott Hernandez
- */
+
 @SuppressWarnings("unchecked")
 public class MappedClass {
 	private static final Logger log = Logger.getLogger(MappedClass.class);

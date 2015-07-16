@@ -4,7 +4,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
 
@@ -22,25 +22,25 @@ public class MongoOpts {
 		options.threadsAllowedToBlockForConnectionMultiplier = 10;
 	}
 	
-	public void addServer(String host,int port) throws UnknownHostException{
+	public void addHost(String host,int port) throws UnknownHostException{
 		seeds.add(new ServerAddress(host, port));
 		LOGGER.info("[ADD_SERVER '"+id+"']: " + host +":" + port);
 	}
 	
-	public void addServer(String connectString) throws UnknownHostException{
+	public void addHost(String connectString) throws UnknownHostException{
 		String [] val = connectString.split(":");
-		addServer(val[0], Integer.parseInt(val[1]));
+        addHost(val[0], Integer.parseInt(val[1]));
 	}
 	
-	public void addServers(String[] connects) throws UnknownHostException{
+	public void addHosts(String[] connects) throws UnknownHostException{
 		for(String s : connects){
-			addServer(s);
+            addHost(s);
 		}
 	}
 	
-	public void addServers(String seeds) throws UnknownHostException{
+	public void addHosts(String seeds) throws UnknownHostException{
 		String [] servers = seeds.split(",");
-		addServers(servers);
+        addHosts(servers);
 	}
 
 	public void setAutoConnectRetry(boolean autoConnectRetry){

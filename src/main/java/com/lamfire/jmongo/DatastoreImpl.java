@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.lamfire.jmongo.annotations.*;
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.mapping.MappedClass;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.Mapper;

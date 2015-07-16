@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.Mapper;
 import com.lamfire.jmongo.mapping.MapperOptions;
@@ -17,12 +17,6 @@ import com.lamfire.jmongo.mapping.MappingException;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 
-/**
- * Default encoders
- * 
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class DefaultConverters {
 	private static final Logger log = Logger.getLogger(DefaultConverters.class);

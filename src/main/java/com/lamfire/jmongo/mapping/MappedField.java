@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.annotations.AlsoLoad;
 import com.lamfire.jmongo.annotations.ConstructorArgs;
 import com.lamfire.jmongo.annotations.Embedded;
@@ -31,11 +31,6 @@ import com.lamfire.jmongo.annotations.Version;
 import com.lamfire.jmongo.utils.ReflectionUtils;
 import com.mongodb.DBObject;
 
-/**
- * Represents the mapping of this field to/from jmongo (name, list<annotation>)
- * 
- * @author Scott Hernandez
- */
 @SuppressWarnings({"unchecked"})
 public class MappedField {
 	private static final Logger log = Logger.getLogger(MappedField.class);

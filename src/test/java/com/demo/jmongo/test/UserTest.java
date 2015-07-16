@@ -177,8 +177,6 @@ public class UserTest {
 	}
 
     public static void main(String[] args) {
-        //test();
-        User user = newRandomUser();
-        System.out.println(dao.toDBObject(user));
+        test();
     }
 }

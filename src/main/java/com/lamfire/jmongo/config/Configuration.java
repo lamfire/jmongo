@@ -1,15 +1,15 @@
 package com.lamfire.jmongo.config;
 
+import java.io.InputStream;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import com.lamfire.jmongo.MongoOpts;
-import com.lamfire.logger.Logger;
-import com.lamfire.utils.PropertiesUtils;
-import com.lamfire.utils.StringUtils;
+import com.lamfire.jmongo.logger.Logger;
 
 public class Configuration {
 	private static final Logger LOGGER = Logger.getLogger(Configuration.class);
@@ -26,14 +26,35 @@ public class Configuration {
 	private Configuration(){
 		loadConfigureFile();
 	}
+
+    private static boolean isBlank(String str) {
+        int strLen;
+        if ((str == null) || ((strLen = str.length()) == 0)) {
+            return true;
+        }
+        for (int i = 0; i < strLen; i++) {
+            if (!Character.isWhitespace(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
 	
 	private void loadConfigureFile(){
-		Map<String,String> map = PropertiesUtils.loadAsMap(CONFIG_FILE, Configuration.class);
-		for(Entry<String,String> e : map.entrySet()){
-			String key = e.getKey();
-			String val = e.getValue();
-			LOGGER.info("[Mongo.Configure]:" + key +" = " + val );
-			String[] keys = StringUtils.split(key,".",2);
+        Properties properties = new Properties();
+        try{
+            InputStream input = Configuration.class.getClassLoader().getResourceAsStream(CONFIG_FILE);
+            properties.load(input);
+        }catch (Throwable t){
+            t.printStackTrace();
+        }
+		//Map<String,String> map = PropertiesUtils.loadAsMap(CONFIG_FILE, Configuration.class);
+		for(Entry<Object,Object> e : properties.entrySet()){
+			String key = e.getKey().toString();
+			String val = e.getValue().toString();
+			LOGGER.info("[Configure]:" + key +" = " + val );
+			//String[] keys = StringUtils.split(key,".",2);
+            String[] keys = key.split("\\.");
 			if(keys.length != 2){
 				continue;
 			}
@@ -83,7 +104,7 @@ public class Configuration {
 		}
 		
 		try {
-			opts.addServers(seeds);
+			opts.addHosts(seeds);
 		} catch (UnknownHostException e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}
@@ -98,35 +119,35 @@ public class Configuration {
 		String threadsAllowedToBlockForConnectionMultiplier = conf.get("threadsAllowedToBlockForConnectionMultiplier");
 		
 
-		if(StringUtils.isNotBlank(connectionsPerHost)){
+		if(!isBlank(connectionsPerHost)){
 			opts.setConnectionsPerHost(Integer.parseInt(connectionsPerHost));
 		}
 		
-		if(StringUtils.isNotBlank(threadsAllowedToBlockForConnectionMultiplier)){
+		if(!isBlank(threadsAllowedToBlockForConnectionMultiplier)){
 			opts.setThreadsAllowedToBlockForConnectionMultiplier(Integer.parseInt(threadsAllowedToBlockForConnectionMultiplier));
 		}
 		
-		if(StringUtils.isNotBlank(connectTimeout)){
+		if(!isBlank(connectTimeout)){
 			opts.setConnectTimeout(Integer.parseInt(connectTimeout));
 		}
 		
-		if(StringUtils.isNotBlank(maxAutoConnectRetryTime)){
+		if(!isBlank(maxAutoConnectRetryTime)){
 			opts.setMaxAutoConnectRetryTime(Integer.parseInt(maxAutoConnectRetryTime));
 		}
 		
-		if(StringUtils.isNotBlank(maxWaitTime)){
+		if(!isBlank(maxWaitTime)){
 			opts.setMaxWaitTime(Integer.parseInt(maxWaitTime));
 		}
 		
-		if(StringUtils.isNotBlank(socketTimeout)){
+		if(!isBlank(socketTimeout)){
 			opts.setSocketTimeout(Integer.parseInt(socketTimeout));
 		}
 		
-		if(StringUtils.isNotBlank(autoConnectRetry)){
+		if(!isBlank(autoConnectRetry)){
 			opts.setAutoConnectRetry(Boolean.parseBoolean(autoConnectRetry));
 		}
 		
-		if(StringUtils.isNotBlank(socketKeepAlive)){
+		if(!isBlank(socketKeepAlive)){
 			opts.setSocketKeepAlive(Boolean.parseBoolean(socketKeepAlive));
 		}
 		return opts;

@@ -3,12 +3,8 @@
  */
 package com.lamfire.jmongo.mapping.lazy;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * 
- */
 public class LazyFeatureDependencies {
 	
 	private static final Logger logger = Logger.getLogger(LazyFeatureDependencies.class);

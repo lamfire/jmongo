@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.utils.Assert;
 
 public class FieldEndImpl<T extends CriteriaContainerImpl> implements FieldEnd<T> {

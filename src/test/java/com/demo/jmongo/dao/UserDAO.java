@@ -1,12 +1,13 @@
 package com.demo.jmongo.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.demo.jmongo.entity.User;
 import com.lamfire.jmongo.dao.DAOSupport;
 import com.lamfire.jmongo.AggregateResults;
 import com.lamfire.jmongo.Aggregator;
-import com.lamfire.utils.Printers;
+import com.mongodb.DBObject;
 
 public class UserDAO extends DAOSupport<User, String> {
 	public UserDAO() {
@@ -40,6 +41,8 @@ public class UserDAO extends DAOSupport<User, String> {
 		aggregator.match(dao.createQuery().field("age").equal(5));
 		aggregator.limit(8);
 		AggregateResults result = dao.aggregate(aggregator);
-		Printers.print(result.getResultMap());
+		for(Map.Entry<Object,DBObject> e : result.getResultMap().entrySet()){
+            System.out.println(e.getKey() +" = " + e.getValue());
+        }
 	}
 }

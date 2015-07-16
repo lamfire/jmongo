@@ -1,9 +1,5 @@
 package com.lamfire.jmongo.mapping.validation;
 
-/**
- * 
- */
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,7 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.annotations.Embedded;
 import com.lamfire.jmongo.annotations.Property;
 import com.lamfire.jmongo.annotations.Reference;
@@ -36,9 +32,6 @@ import com.lamfire.jmongo.mapping.validation.fieldrules.MisplacedProperty;
 import com.lamfire.jmongo.mapping.validation.fieldrules.ReferenceToUnidentifiable;
 import com.lamfire.jmongo.mapping.validation.fieldrules.VersionMisuse;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- */
 public class MappingValidator {
 	
 	private static final Logger logger = Logger.getLogger(MappingValidator.class);

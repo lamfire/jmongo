@@ -1,12 +1,7 @@
 package com.demo.jmongo;
 
 
-import com.lamfire.jmongo.Mongos;
-import com.lamfire.jmongo.annotations.PrePersist;
-import com.lamfire.jmongo.annotations.PreSave;
-import com.lamfire.jmongo.mapping.MappedClass;
-import com.lamfire.jmongo.mapping.MappedField;
-import com.lamfire.jmongo.mapping.MappingException;
+import com.lamfire.jmongo.JMongo;
 import com.lamfire.utils.RandomUtils;
 import com.mongodb.*;
 
@@ -17,7 +12,7 @@ public class Main {
     private static AtomicInteger count = new AtomicInteger();
 
 	public static void main(String[] args) {
-        DB db = Mongos.getMongo().getDB("test");
+        DB db = JMongo.getMongo().getDB("test");
         DBCollection col = db.getCollection("User");
 
 

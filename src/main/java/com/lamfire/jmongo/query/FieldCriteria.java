@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.mapping.MappedClass;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.Mapper;

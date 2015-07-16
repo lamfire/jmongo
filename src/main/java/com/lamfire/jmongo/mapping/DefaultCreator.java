@@ -11,14 +11,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.ObjectFactory;
 import com.lamfire.jmongo.annotations.ConstructorArgs;
 import com.mongodb.DBObject;
 
-/**
- * @author ScottHernandez
- */
 @SuppressWarnings({"unchecked"})
 public class DefaultCreator implements ObjectFactory {
 	private static final Logger log = Logger.getLogger(DefaultCreator.class);

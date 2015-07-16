@@ -10,7 +10,7 @@ import java.util.Map;
 import org.bson.BSONObject;
 import org.bson.types.CodeWScope;
 
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.Datastore;
 import com.lamfire.jmongo.DatastoreImpl;
 import com.lamfire.jmongo.Key;
@@ -27,13 +27,6 @@ import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.ReadPreference;
 
-/**
- * <p>Implementation of Query</p>
- * 
- * @author Scott Hernandez
- *
- * @param <T> The type we will be querying for, and returning.
- */
 @SuppressWarnings("unchecked")
 public class QueryImpl<T> extends CriteriaContainerImpl implements Query<T>, Criteria {
 	private static final Logger log = Logger.getLogger(QueryImpl.class);

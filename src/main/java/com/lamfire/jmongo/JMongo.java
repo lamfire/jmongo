@@ -4,17 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.lamfire.jmongo.config.Configuration;
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.mongodb.Mongo;
 
 
-public class Mongos {
-	private static final Logger LOGGER = Logger.getLogger(Mongos.class);
-	private static final Map<String, Mapping> morphias = new HashMap<String, Mapping>();
+public class JMongo {
+	private static final Logger LOGGER = Logger.getLogger(JMongo.class);
+	private static final Map<String, Mapping> mappings = new HashMap<String, Mapping>();
 	private static final String DEFAULT_ID = "default";
 	private static Map<String, Mongo> pool = new HashMap<String, Mongo>();
 	
-	private static synchronized Mongo newMongo(MongoOpts opts){
+	public static synchronized Mongo register(MongoOpts opts){
 		if(opts == null){
 			throw new RuntimeException("the parameter 'MongoOpts' cannot be null.");
 		}
@@ -34,7 +34,7 @@ public class Mongos {
 		if(mongo == null){
 			MongoOpts opts = Configuration.getInstance().getMongoOpts(id);
 			if(opts != null){
-				mongo = newMongo(opts);
+				mongo = register(opts);
 			}
 		}
 		return mongo;
@@ -44,7 +44,7 @@ public class Mongos {
 		Mongo mongo = getMongo(DEFAULT_ID);
 		if(mongo == null){
 			MongoOpts opts = Configuration.getInstance().getMongoOpts(DEFAULT_ID);
-			mongo = newMongo(opts);
+			mongo = register(opts);
 		}
 		return mongo;
 	}
@@ -54,25 +54,13 @@ public class Mongos {
 	}
 	
 	public static synchronized Mapping getMapping(String dbName){
-		Mapping morphia = morphias.get(dbName);
-		if(morphia != null){
-			return morphia;
+		Mapping mapping = mappings.get(dbName);
+		if(mapping != null){
+			return mapping;
 		}
-		morphia = new Mapping();
-		morphias.put(dbName, morphia);
-		return morphia;
-	}
-	
-	public static Datastore getDatastore(String mongoId,String dbName){
-		Datastore ds =  getMapping(dbName).createDatastore(getMongo(mongoId), dbName);
-		ds.ensureIndexes();
-		return ds;
-	}
-
-	public static Datastore getDatastore(String dbName){
-		Datastore ds =  getMapping(dbName).createDatastore(getMongo(), dbName);
-		ds.ensureIndexes();
-		return ds;
+        mapping = new Mapping();
+		mappings.put(dbName, mapping);
+		return mapping;
 	}
 
 }

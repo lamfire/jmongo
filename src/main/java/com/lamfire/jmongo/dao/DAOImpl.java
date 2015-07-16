@@ -8,7 +8,7 @@ import java.util.Map;
 
 import com.lamfire.jmongo.*;
 import com.lamfire.jmongo.mapping.MappedClass;
-import com.lamfire.logger.Logger;
+import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.Mapping;
 import com.lamfire.jmongo.query.Query;
 import com.lamfire.jmongo.query.QueryResults;

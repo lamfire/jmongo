@@ -22,15 +22,21 @@ public class UserTest {
 
 	static UserDAO dao = new UserDAO("User1");
     static AtomicInteger ids = new AtomicInteger();
+
+    public static User newRandomUser(){
+        double x = Double.valueOf(RandomUtils.nextInt(100) +"." + (10000) +RandomUtils.nextInt(99999) );
+        double y = Double.valueOf((RandomUtils.nextInt(180)) +"." + (10000) +RandomUtils.nextInt(99999) );
+        User user = new User();
+        user.setAge(RandomUtils.nextInt(99));
+        user.setUsername(String.format("%05d", ids.incrementAndGet()));
+        user.setPostion(x, y);
+        user.setPassword("password" + String.valueOf(10000 + RandomUtils.nextInt(9999)));
+        return user;
+    }
+
 	public static String insertRandom() {
 		try {
-			double x = Double.valueOf(RandomUtils.nextInt(100) +"." + (10000) +RandomUtils.nextInt(99999) );
-			double y = Double.valueOf((RandomUtils.nextInt(180)) +"." + (10000) +RandomUtils.nextInt(99999) );
-			User user = new User();
-			user.setAge(RandomUtils.nextInt(99));
-			user.setUsername(String.format("%05d", ids.incrementAndGet()));
-			user.setPostion(x, y);
-			user.setPassword("password" + String.valueOf(10000 + RandomUtils.nextInt(9999)));
+			User user = newRandomUser();
 			Key<User> key = dao.insert(user);
 			return (String) key.getId();
 		} catch (Exception e) {
@@ -171,6 +177,8 @@ public class UserTest {
 	}
 
     public static void main(String[] args) {
-        test();
+        //test();
+        User user = newRandomUser();
+        System.out.println(dao.toDBObject(user));
     }
 }

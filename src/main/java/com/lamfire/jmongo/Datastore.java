@@ -176,4 +176,6 @@ public interface Datastore {
 	void setDefaultWriteConcern(WriteConcern wc);
 
     DBDecoderFactory getDecoderFactory();
+
+    <T> DBObject toDBObject(T entity);
 }

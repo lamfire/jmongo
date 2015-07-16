@@ -331,4 +331,8 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 		return 0l;
 	}
 
+    public DBObject toDBObject(T entity){
+        return ds.toDBObject(entity);
+    }
+
 }

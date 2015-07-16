@@ -997,6 +997,12 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return merge(kind,entity, getWriteConcern(entity));
 	}
 
+    public <T> DBObject toDBObject(T entity){
+        LinkedHashMap<Object, DBObject> involvedObjects = new LinkedHashMap<Object, DBObject>();
+        DBObject dbObj = mapper.toDBObject(entity, involvedObjects);
+        return dbObj;
+    }
+
 	public <T> Key<T> merge(String kind,T entity, WriteConcern wc) {
 		LinkedHashMap<Object, DBObject> involvedObjects = new LinkedHashMap<Object, DBObject>();
 		DBObject dbObj = mapper.toDBObject(entity, involvedObjects);

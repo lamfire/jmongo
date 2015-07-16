@@ -13,6 +13,7 @@ import com.lamfire.jmongo.query.QueryResults;
 import com.lamfire.jmongo.query.UpdateOperations;
 import com.lamfire.jmongo.query.UpdateResults;
 import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.mongodb.WriteConcern;
 import com.mongodb.WriteResult;
 
@@ -77,6 +78,8 @@ public interface DAO<T, K> {
 	public DBCollection getCollection();
 
 	public Datastore getDatastore();
+
+    public DBObject toDBObject(T entity);
 	
 	public List<T> gets(Iterable<K> ids);
 

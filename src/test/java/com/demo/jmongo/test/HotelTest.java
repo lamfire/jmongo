@@ -79,6 +79,7 @@ public class HotelTest {
 		Query<Hotel> query = dao.createQuery();
 		query.field("stars").lessThan(5);
 		query.excludeFields("stars","name");
+        query.limit(10);
 		
 		List<Hotel> list = query.asList();
 		for(Hotel hotel : list){

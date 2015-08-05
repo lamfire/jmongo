@@ -24,7 +24,7 @@ public class MongoOpts {
 	
 	public void addHost(String host,int port) throws UnknownHostException{
 		seeds.add(new ServerAddress(host, port));
-		LOGGER.info("[ADD_SERVER '"+id+"']: " + host +":" + port);
+		LOGGER.info("[HOST '"+id+"']: " + host +":" + port);
 	}
 	
 	public void addHost(String connectString) throws UnknownHostException{

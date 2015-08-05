@@ -6,6 +6,8 @@ import java.util.Map;
 import com.lamfire.jmongo.config.Configuration;
 import com.lamfire.jmongo.logger.Logger;
 import com.mongodb.Mongo;
+import com.mongodb.ReadPreference;
+import com.mongodb.WriteConcern;
 
 
 public class JMongo {
@@ -25,6 +27,8 @@ public class JMongo {
 			return mongo;
 		}
 		mongo =  new Mongo(opts.seeds,opts.options);
+        mongo.setReadPreference(ReadPreference.secondaryPreferred());
+        mongo.setWriteConcern(WriteConcern.NORMAL);
 		pool.put(id, mongo);
 		return mongo;
 	}

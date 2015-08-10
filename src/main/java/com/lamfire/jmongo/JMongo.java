@@ -13,7 +13,6 @@ import com.mongodb.WriteConcern;
 public class JMongo {
 	private static final Logger LOGGER = Logger.getLogger(JMongo.class);
 	private static final Map<String, Mapping> mappings = new HashMap<String, Mapping>();
-	private static final String DEFAULT_ID = "default";
 	private static Map<String, Mongo> pool = new HashMap<String, Mongo>();
 	
 	public static synchronized Mongo register(MongoOpts opts){
@@ -33,7 +32,7 @@ public class JMongo {
 		return mongo;
 	}
 
-	public static Mongo getMongo(String id){
+	public static synchronized Mongo getMongo(String id){
 		Mongo mongo =  pool.get(id);
 		if(mongo == null){
 			MongoOpts opts = Configuration.getInstance().getMongoOpts(id);
@@ -44,19 +43,6 @@ public class JMongo {
 		return mongo;
 	}
 
-	public static Mongo getMongo(){
-		Mongo mongo = getMongo(DEFAULT_ID);
-		if(mongo == null){
-			MongoOpts opts = Configuration.getInstance().getMongoOpts(DEFAULT_ID);
-			mongo = register(opts);
-		}
-		return mongo;
-	}
-	
-	public static synchronized Mapping getMapping(){
-		return getMapping(DEFAULT_ID);
-	}
-	
 	public static synchronized Mapping getMapping(String dbName){
 		Mapping mapping = mappings.get(dbName);
 		if(mapping != null){

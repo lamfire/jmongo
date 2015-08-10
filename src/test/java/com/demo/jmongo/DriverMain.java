@@ -14,11 +14,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DriverMain {
 
 	public static void main(String[] args) {
-        Mongo mongo = JMongo.getMongo();
+        Mongo mongo = JMongo.getMongo("default");
         DB db = mongo.getDB("test");
         DBCollection dbCol = db.getCollection("User2");
         System.out.println(dbCol.count());
-
         System.out.println(dbCol.getIndexInfo());
 	}
 }

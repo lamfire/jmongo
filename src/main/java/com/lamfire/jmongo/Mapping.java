@@ -101,13 +101,7 @@ public class Mapping {
         }
     }
 
-    /**
-     * Check whether a specific class is mapped by this instance.
-     *
-     * @param entityClass
-     *            the class we want to check
-     * @return true if the class is mapped, else false
-     */
+
     public boolean isMapped(Class entityClass) {
         return mapper.isMapped(entityClass);
     }
@@ -135,15 +129,4 @@ public class Mapping {
 
     public Mapper getMapper() { return this.mapper; }
 
-
-    /** It is best to use a Mongo singleton instance here**/
-    public Datastore createDatastore(Mongo mon, String dbName, String user, char[] pw) {
-    	return new DatastoreImpl(this, mon, dbName, user, pw);
-    }
-
-    /** It is best to use a Mongo singleton instance here**/
-	public Datastore createDatastore(Mongo mongo, String dbName) {
-		return createDatastore(mongo, dbName, null, null);
-	}
-	
 }

@@ -61,20 +61,6 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBObject;
 import com.mongodb.DBRef;
 
-/**
- * 
- * <p>
- * This is the heart of Mapping and takes care of mapping from/to
- * POJOs/DBObjects
- * <p>
- * <p>
- * This class is thread-safe and keeps various "cached" data which should speed
- * up processing.
- * </p>
- * 
- * @author Olafur Gauti Gudmundsson
- * @author Scott Hernandez
- */
 @SuppressWarnings( { "unchecked" })
 public class Mapper {
 	private static final Logger log = Logger.getLogger(Mapper.class);

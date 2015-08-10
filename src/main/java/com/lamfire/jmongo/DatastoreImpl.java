@@ -68,13 +68,9 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		// VERY discussable
 		DatastoreHolder.getInstance().set(this);
 	}
-	
-	public DatastoreImpl(Mapping jmongo, Mongo mongo) {
-		this(jmongo, mongo, null);
-	}
 
-	public DatastoreImpl(Mapping jmongo, Mongo mongo, String dbName, String username, char[] password) {
-		this(jmongo.getMapper(), mongo, dbName);
+	public DatastoreImpl(Mapping mapping, Mongo mongo, String dbName, String username, char[] password) {
+		this(mapping.getMapper(), mongo, dbName);
 
 		if (username != null)
 			if (!this.db.authenticate(username, password))
@@ -83,8 +79,8 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		
 	}
 
-	public DatastoreImpl(Mapping jmongo, Mongo mongo, String dbName) {
-		this(jmongo.getMapper(), mongo, dbName);
+	public DatastoreImpl(Mapping mapping, Mongo mongo, String dbName) {
+		this(mapping.getMapper(), mongo, dbName);
 	}
 
 	public DatastoreImpl copy(String db) {

@@ -6,24 +6,12 @@ import com.mongodb.Mongo;
 
 public abstract class DAOSupport<E,K> extends DAOImpl<E,K>{
 
-    public DAOSupport(String mongo,String dbName,Class<E> clazz,String collection) {
-        super(JMongo.getMongo(mongo), JMongo.getMapping(dbName),dbName,clazz,collection);
+    public DAOSupport(String mongoName,String dbName,Class<E> clazz,String kind) {
+        super(JMongo.getMongo(mongoName), JMongo.getMapping(dbName),dbName,clazz,kind);
     }
 	
-	public DAOSupport(String mongo,String dbName,Class<E> clazz) {
-		super(JMongo.getMongo(mongo), JMongo.getMapping(dbName),dbName,clazz);
-	}
-	
-	protected DAOSupport(String dbName) {
-		super(JMongo.getMongo(), JMongo.getMapping(dbName), dbName);
-	}
-	
-	protected DAOSupport(String mongo,String dbName) {
-		super(JMongo.getMongo(mongo), JMongo.getMapping(dbName), dbName);
+	public DAOSupport(String mongoName,String dbName,Class<E> clazz) {
+		super(JMongo.getMongo(mongoName), JMongo.getMapping(dbName),dbName,clazz);
 	}
 
-	protected DAOSupport(Mongo mongo, Mapping morphia, String dbName) {
-		super(mongo, morphia, dbName);
-	}
-	
 }

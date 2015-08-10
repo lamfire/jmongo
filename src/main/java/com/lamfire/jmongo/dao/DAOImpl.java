@@ -26,9 +26,9 @@ import com.mongodb.WriteResult;
 @SuppressWarnings("unchecked")
 public class DAOImpl<T, K> implements DAO<T, K> {
 	private static final Logger LOGGER = Logger.getLogger(DAOImpl.class);
+    protected final String kind;
 	protected Class<T> entityClazz;
     protected MappedClass mappedClass;
-    protected String kind;
 	protected Datastore ds;
 
     public DAOImpl(Mongo mongo, Mapping mapping, String dbName,Class<T> entityClass,String kind) {
@@ -45,24 +45,8 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         ensureIndexes();
 	}
 
-	protected DAOImpl(Mongo mongo, Mapping mapping, String dbName) {
-		initDS(mongo, mapping, dbName);
-        Class<T> entityClass = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
-        initMappedClass(entityClass);
-        this.kind = mappedClass.getCollectionName();
-        ensureIndexes();
-	}
-	
-	protected DAOImpl(Datastore ds) {
-		this.ds = (DatastoreImpl) ds;
-        Class<T> entityClass = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
-        initMappedClass(entityClass);
-        this.kind = mappedClass.getCollectionName();
-        ensureIndexes();
-	}
-
 	protected synchronized void initMappedClass(Class<T> type) {
-		this.entityClazz = type;
+        this.entityClazz = type;
 		if(ds.getMapper().isMapped(type)){
             this.mappedClass = ds.getMapper().getMappedClass(type);
             return;
@@ -71,8 +55,8 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         this.mappedClass = ds.getMapper().addMappedClass(type);
 	}
 
-	protected void initDS(Mongo mon, Mapping mor, String db) {
-		ds = new DatastoreImpl(mor, mon, db);
+	protected void initDS(Mongo mon, Mapping mapping, String db) {
+		ds = new DatastoreImpl(mapping, mon, db);
 	}
 
 	protected List<?> keysToIds(List<Key<T>> keys) {

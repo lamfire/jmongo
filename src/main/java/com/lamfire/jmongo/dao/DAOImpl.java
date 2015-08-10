@@ -27,47 +27,53 @@ import com.mongodb.WriteResult;
 public class DAOImpl<T, K> implements DAO<T, K> {
 	private static final Logger LOGGER = Logger.getLogger(DAOImpl.class);
 	protected Class<T> entityClazz;
+    protected MappedClass mappedClass;
     protected String kind;
 	protected Datastore ds;
 
     public DAOImpl(Mongo mongo, Mapping mapping, String dbName,Class<T> entityClass,String kind) {
         initDS(mongo, mapping, dbName);
-        initType(entityClass);
+        initMappedClass(entityClass);
         this.kind = kind;
         ensureIndexes();
     }
 	
 	public DAOImpl(Mongo mongo, Mapping mapping, String dbName,Class<T> entityClass) {
 		initDS(mongo, mapping, dbName);
-		initType(entityClass);
+        initMappedClass(entityClass);
+        this.kind = mappedClass.getCollectionName();
         ensureIndexes();
 	}
 
 	protected DAOImpl(Mongo mongo, Mapping mapping, String dbName) {
 		initDS(mongo, mapping, dbName);
-		initType(((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]));
+        Class<T> entityClass = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+        initMappedClass(entityClass);
+        this.kind = mappedClass.getCollectionName();
         ensureIndexes();
 	}
 	
 	protected DAOImpl(Datastore ds) {
 		this.ds = (DatastoreImpl) ds;
-		initType(((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]));
+        Class<T> entityClass = ((Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+        initMappedClass(entityClass);
+        this.kind = mappedClass.getCollectionName();
         ensureIndexes();
 	}
-	
-	protected synchronized void initType(Class<T> type) {
+
+	protected synchronized void initMappedClass(Class<T> type) {
 		this.entityClazz = type;
 		if(ds.getMapper().isMapped(type)){
-			return;
+            this.mappedClass = ds.getMapper().getMappedClass(type);
+            return;
 		}
 		LOGGER.info("[MAPPING]:" + type.getName());
-        MappedClass mappedClass = ds.getMapper().addMappedClass(type);
-        this.kind = mappedClass.getCollectionName();
+        this.mappedClass = ds.getMapper().addMappedClass(type);
 	}
+
 	protected void initDS(Mongo mon, Mapping mor, String db) {
 		ds = new DatastoreImpl(mor, mon, db);
 	}
-	
 
 	protected List<?> keysToIds(List<Key<T>> keys) {
 		ArrayList ids = new ArrayList(keys.size() * 2);

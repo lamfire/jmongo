@@ -16,7 +16,7 @@ public class Main {
 
 	public static void main(String[] args) {
 
-        UserDAO dao = new UserDAO("User2");
+        UserDAO dao = new UserDAO();
 
         double x = Double.valueOf(RandomUtils.nextInt(100) +"." + (10000) +RandomUtils.nextInt(99999) );
         double y = Double.valueOf((RandomUtils.nextInt(180)) +"." + (10000) +RandomUtils.nextInt(99999) );
@@ -27,9 +27,10 @@ public class Main {
         user.setPassword("password" + String.valueOf(10000 + RandomUtils.nextInt(9999)));
         dao.save(user);
 
+        dao = new UserDAO();
         System.out.println(dao.count());
 
-
+        dao = new UserDAO();
         List<User> users = dao.createQuery().asList();
         System.out.println(users);
 

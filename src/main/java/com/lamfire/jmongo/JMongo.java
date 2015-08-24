@@ -22,7 +22,6 @@ public class JMongo {
 		String id = opts.getId();
 		Mongo mongo = pool.get(id);
 		if(mongo != null){
-			LOGGER.error("the mongo id '"+id+"' exists.");
 			return mongo;
 		}
 		mongo =  new Mongo(opts.seeds,opts.options);

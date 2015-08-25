@@ -11,7 +11,7 @@ import com.mongodb.DBObject;
 
 public class UserDAO extends DAOSupport<User, String> {
 	public UserDAO() {
-		super("default", "test", User.class);
+		super("default1", "test", User.class);
 	}
 
     public UserDAO(String collection) {

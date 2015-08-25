@@ -35,9 +35,10 @@ public class JMongo {
 		Mongo mongo =  pool.get(id);
 		if(mongo == null){
 			MongoOpts opts = Configuration.getInstance().getMongoOpts(id);
-			if(opts != null){
-				mongo = register(opts);
+			if(opts == null){
+			    throw new RuntimeException("The id["+id+"] settings not found at 'mongo.properties'");
 			}
+            mongo = register(opts);
 		}
 		return mongo;
 	}

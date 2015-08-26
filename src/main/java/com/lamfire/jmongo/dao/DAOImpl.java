@@ -10,6 +10,7 @@ import com.lamfire.jmongo.*;
 import com.lamfire.jmongo.mapping.MappedClass;
 import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.Mapping;
+import com.lamfire.jmongo.mapping.Mapper;
 import com.lamfire.jmongo.query.Query;
 import com.lamfire.jmongo.query.QueryResults;
 import com.lamfire.jmongo.query.UpdateOperations;
@@ -30,33 +31,30 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	protected Class<T> entityClazz;
     protected MappedClass mappedClass;
 	protected Datastore ds;
+    protected Mongo mongo;
+    protected Mapping mapping;
+    protected String dbName;
 
     public DAOImpl(Mongo mongo, Mapping mapping, String dbName,Class<T> entityClass,String kind) {
-        initDS(mongo, mapping, dbName);
-        initMappedClass(entityClass);
+        this.mongo = mongo;
+        this.mapping = mapping;
+        this.dbName = dbName;
+        this.entityClazz = entityClass;
         this.kind = kind;
+        this.mappedClass =mapping.getMapper().getMappedClass(entityClass);
+        this.ds  = new DatastoreImpl(mapping.getMapper(), mongo, dbName);
         ensureIndexes();
     }
 	
 	public DAOImpl(Mongo mongo, Mapping mapping, String dbName,Class<T> entityClass) {
-		initDS(mongo, mapping, dbName);
-        initMappedClass(entityClass);
+        this.mongo = mongo;
+        this.mapping = mapping;
+        this.dbName = dbName;
+        this.entityClazz = entityClass;
+        this.mappedClass =mapping.getMapper().getMappedClass(entityClass);
+        this.ds  = new DatastoreImpl(mapping.getMapper(), mongo, dbName);
         this.kind = mappedClass.getCollectionName();
         ensureIndexes();
-	}
-
-	protected synchronized void initMappedClass(Class<T> type) {
-        this.entityClazz = type;
-		if(ds.getMapper().isMapped(type)){
-            this.mappedClass = ds.getMapper().getMappedClass(type);
-            return;
-		}
-		LOGGER.info("[MAPPING]:" + type.getName());
-        this.mappedClass = ds.getMapper().addMappedClass(type);
-	}
-
-	protected void initDS(Mongo mon, Mapping mapping, String db) {
-		ds = new DatastoreImpl(mapping, mon, db);
 	}
 
 	protected List<?> keysToIds(List<Key<T>> keys) {

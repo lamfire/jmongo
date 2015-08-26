@@ -150,8 +150,9 @@ public class Mapper {
 
 	/** Add MappedClass to internal cache, possibly validating first. */
 	private MappedClass addMappedClass(MappedClass mc, boolean validate) {
-		if (validate)
+		if (validate){
 			mc.validate();
+        }
 
 		Converters c = (Converters) mc.getAnnotation(Converters.class);
 		if (c != null)
@@ -160,7 +161,7 @@ public class Mapper {
 					converters.addConverter(clazz);
 
 		mappedClasses.put(mc.getClazz().getName(), mc);
-
+        log.info("[mapper] add '" + mc.getCollectionName() +"' -> " + mc.getClazz().getName());
 		Set<MappedClass> mcs = mappedClassesByCollection.get(mc.getCollectionName());
 		if (mcs == null) {
 			mcs = new CopyOnWriteArraySet<MappedClass>();
@@ -190,7 +191,7 @@ public class Mapper {
 	 * create a new class and cache it (without validating).
 	 * </p>
 	 */
-	public MappedClass getMappedClass(final Object obj) {
+	public synchronized MappedClass getMappedClass(final Object obj) {
 		if (obj == null) {
 			return null;
 		}

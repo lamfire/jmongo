@@ -69,18 +69,14 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		DatastoreHolder.getInstance().set(this);
 	}
 
-	public DatastoreImpl(Mapping mapping, Mongo mongo, String dbName, String username, char[] password) {
-		this(mapping.getMapper(), mongo, dbName);
+	public DatastoreImpl(Mapper mapr, Mongo mongo, String dbName, String username, char[] password) {
+		this(mapr, mongo, dbName);
 
 		if (username != null)
 			if (!this.db.authenticate(username, password))
 				throw new AuthenticationException("User '" + username
 						+ "' cannot be authenticated with the given password for database '" + dbName + "'");
 		
-	}
-
-	public DatastoreImpl(Mapping mapping, Mongo mongo, String dbName) {
-		this(mapping.getMapper(), mongo, dbName);
 	}
 
 	public DatastoreImpl copy(String db) {

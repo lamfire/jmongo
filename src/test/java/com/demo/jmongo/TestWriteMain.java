@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 public class TestWriteMain {
 
 	public static void main(String[] args) {
-		int threads = 1;
+		int threads = 10;
 
 		if(args.length == 2){
 			threads = Integer.parseInt(args[0]);

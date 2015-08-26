@@ -161,7 +161,7 @@ public class Mapper {
 					converters.addConverter(clazz);
 
 		mappedClasses.put(mc.getClazz().getName(), mc);
-        log.info("[mapper] add '" + mc.getCollectionName() +"' -> " + mc.getClazz().getName());
+        log.info("[mapper] add -> " + mc.getClazz().getName());
 		Set<MappedClass> mcs = mappedClassesByCollection.get(mc.getCollectionName());
 		if (mcs == null) {
 			mcs = new CopyOnWriteArraySet<MappedClass>();

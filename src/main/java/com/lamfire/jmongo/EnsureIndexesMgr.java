@@ -1,6 +1,7 @@
 package com.lamfire.jmongo;
 
 import com.lamfire.jmongo.logger.Logger;
+import com.mongodb.Mongo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,13 +23,18 @@ public class EnsureIndexesMgr {
         return instance;
     }
 
-    public boolean isEnsureIndexes(Datastore ds,String kind){
-        String key = ds.getName() + "/" + kind;
+    private String getKey(Mongo mongo,Datastore ds,String kind){
+        String key = mongo.getAddress() +"/" + ds.getName() + "/" + kind;
+        return key;
+    }
+
+    public boolean isEnsureIndexes(Mongo mongo,Datastore ds,String kind){
+        String key = getKey(mongo,ds,kind);
         return indexes.containsKey(key);
     }
 
-    public synchronized void ensureIndexes(Datastore ds,String kind,Class<?> entityClazz){
-        String key = ds.getName() + "/" + kind;
+    public synchronized void ensureIndexes(Mongo mongo,Datastore ds,String kind,Class<?> entityClazz){
+        String key = getKey(mongo,ds,kind);
         if(indexes.containsKey(key)){
             return;
         }

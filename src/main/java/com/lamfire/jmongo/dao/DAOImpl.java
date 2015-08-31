@@ -209,7 +209,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	
 	public void ensureIndexes() {
         EnsureIndexesMgr mgr = EnsureIndexesMgr.getInstance();
-        mgr.ensureIndexes(ds,kind,entityClazz);
+        mgr.ensureIndexes(mongo,ds,kind,entityClazz);
 	}
 
 	public T incrementAndGet(K id, String fieldName) {

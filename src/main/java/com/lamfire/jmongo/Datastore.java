@@ -12,7 +12,8 @@ import com.lamfire.jmongo.utils.IndexFieldDef;
 import com.mongodb.*;
 
 @SuppressWarnings("unchecked")
-public interface Datastore {	
+public interface Datastore {
+    String getName();
 
 	<T> Key<T> getKey(T entity);
 

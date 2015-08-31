@@ -40,8 +40,8 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         this.mapping = mapping;
         this.dbName = dbName;
         this.entityClazz = entityClass;
-        this.kind = kind;
         this.mappedClass =mapping.getMapper().getMappedClass(entityClass);
+        this.kind = kind;
         this.ds  = new DatastoreImpl(mapping.getMapper(), mongo, dbName);
         ensureIndexes();
     }
@@ -52,8 +52,8 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         this.dbName = dbName;
         this.entityClazz = entityClass;
         this.mappedClass =mapping.getMapper().getMappedClass(entityClass);
-        this.ds  = new DatastoreImpl(mapping.getMapper(), mongo, dbName);
         this.kind = mappedClass.getCollectionName();
+        this.ds  = new DatastoreImpl(mapping.getMapper(), mongo, dbName);
         ensureIndexes();
 	}
 
@@ -208,7 +208,8 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	}
 	
 	public void ensureIndexes() {
-		ds.ensureIndexes(kind,entityClazz);
+        EnsureIndexesMgr mgr = EnsureIndexesMgr.getInstance();
+        mgr.ensureIndexes(ds,kind,entityClazz);
 	}
 
 	public T incrementAndGet(K id, String fieldName) {

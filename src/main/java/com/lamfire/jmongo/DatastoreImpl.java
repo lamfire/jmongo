@@ -1281,6 +1281,10 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return wc;
 	}
 
+    public String getName(){
+        return this.db.getName();
+    }
+
 	public WriteConcern getDefaultWriteConcern() {return defConcern;}
 
 	public void setDefaultWriteConcern(WriteConcern wc) {defConcern = wc;}

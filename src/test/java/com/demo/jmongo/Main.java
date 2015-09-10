@@ -4,6 +4,8 @@ package com.demo.jmongo;
 import com.demo.jmongo.dao.UserDAO;
 import com.demo.jmongo.entity.User;
 import com.lamfire.jmongo.JMongo;
+import com.lamfire.jmongo.query.Query;
+import com.lamfire.json.JSON;
 import com.lamfire.utils.RandomUtils;
 import com.mongodb.*;
 
@@ -56,8 +58,26 @@ public class Main {
 
 	public static void main(String[] args) {
 
-        test1();
-        test2();
+        //test1();
+        //test2();
+
+        String appkey = "1287sdhgfsui";
+
+        String db = appkey.substring(0,2);
+
+        UserDAO dao = new UserDAO(db,"USER2");
+        dao.save(Users.getUser());
+
+        System.out.println(dao.count());
+
+        Query query = dao.createQuery();
+        query.field("age").greaterThan(50);
+        query.excludeFields("username");
+
+        List<User> list = dao.find(query).asList();
+        for(User u : list){
+            System.out.println(JSON.toJSONString(u));
+        }
 
 	}
 }

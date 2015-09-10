@@ -275,7 +275,7 @@ public class QueryImpl<T> extends CriteriaContainerImpl implements Query<T>, Cri
 		}
 
 		if (log.isDebugEnabled())
-			log.debug(String.format("\nasList: %s \t %d entities, iterator time: driver %n ms, mapper %n ms \n cache: %s \n for $s \n ", 
+			log.debug(String.format("asList: %s \t %d entities, iterator time: driver %d ms, mapper %d ms , cache: %s , for : %s ",
 					dbColl.getName(),
 					results.size(),
 					iter.getDriverTime(),

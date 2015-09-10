@@ -14,6 +14,10 @@ public class UserDAO extends DAOSupport<User, String> {
 		super("default", "test", User.class);
 	}
 
+    public UserDAO(String db,String collection) {
+        super("default", db, User.class,collection);
+    }
+
     public UserDAO(String collection) {
         super("default", "test", User.class,collection);
     }

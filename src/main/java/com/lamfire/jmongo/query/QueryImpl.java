@@ -65,7 +65,7 @@ public class QueryImpl<T> extends CriteriaContainerImpl implements Query<T>, Cri
 		Entity entAn = mc == null ? null : mc.getEntityAnnotation();
 		
 		if (entAn != null && isEnableReplicaSet()){
-			this.readPref = this.ds.getMapper().getMappedClass(clazz).getEntityAnnotation().queryNonPrimary() ? ReadPreference.secondary() : null;
+			this.readPref = this.ds.getMapper().getMappedClass(clazz).getEntityAnnotation().queryNonPrimary() ? ReadPreference.secondaryPreferred(): null;
 		}
 	}
 	

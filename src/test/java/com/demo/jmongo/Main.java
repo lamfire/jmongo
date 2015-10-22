@@ -7,14 +7,16 @@ import com.lamfire.jmongo.JMongo;
 import com.lamfire.jmongo.query.Query;
 import com.lamfire.json.JSON;
 import com.lamfire.utils.RandomUtils;
+import com.lamfire.utils.Threads;
 import com.mongodb.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class Main {
-    private static AtomicInteger count = new AtomicInteger();
+    private static AtomicInteger counter = new AtomicInteger();
 
     static void test1(){
         UserDAO dao = new UserDAO();
@@ -56,28 +58,22 @@ public class Main {
         System.out.println(users);
     }
 
-	public static void main(String[] args) {
-
-        //test1();
-        //test2();
-
-        String appkey = "1287sdhgfsui";
-
-        String db = appkey.substring(0,2);
-
-        UserDAO dao = new UserDAO(db,"USER2");
-        dao.save(Users.getUser());
-
-        System.out.println(dao.count());
-
-        Query query = dao.createQuery();
-        query.field("age").greaterThan(50);
-        query.excludeFields("username");
-
-        List<User> list = dao.find(query).asList();
-        for(User u : list){
-            System.out.println(JSON.toJSONString(u));
+    public static void big() {
+        OPSMonitor monitor = new OPSMonitor();
+        monitor.startup();
+        for(int i=0;i<10000000;i++){
+            UserDAO dao = new UserDAO("db1","USER_BIG");
+            dao.save(Users.getUser());
+            monitor.increment();
         }
 
+    }
+
+	public static void main(String[] args) {
+        long startAt = System.currentTimeMillis();
+        UserDAO dao = new UserDAO("db1","USER_BIG");
+        Query q = dao.createQuery().field("age").equal(45);
+        System.out.println(dao.count(q));
+        System.out.println((System.currentTimeMillis()-startAt));
 	}
 }

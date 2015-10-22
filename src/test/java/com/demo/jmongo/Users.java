@@ -1,6 +1,7 @@
 package com.demo.jmongo;
 
 import com.demo.jmongo.entity.User;
+import com.lamfire.code.PUID;
 import com.lamfire.utils.RandomUtils;
 
 /**
@@ -17,7 +18,7 @@ public class Users {
         double y = Double.valueOf((RandomUtils.nextInt(180)) +"." + (10000) +RandomUtils.nextInt(99999) );
         User user = new User();
         user.setAge(RandomUtils.nextInt(99));
-        user.setUsername(String.format("%05d", RandomUtils.nextInt(100)));
+        user.setUsername(PUID.puidAsString());
         user.setPostion(x, y);
         user.setPassword("password" + String.valueOf(10000 + RandomUtils.nextInt(9999)));
         return user;

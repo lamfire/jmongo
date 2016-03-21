@@ -1,9 +1,6 @@
 package com.lamfire.jmongo.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.lamfire.jmongo.*;
 import com.lamfire.jmongo.mapping.MappedClass;
@@ -341,5 +338,13 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         }
         Object o =  one.get(fieldName);
         return o;
+    }
+
+    public Map<String,Object> getAsMap(K id){
+        DBObject one = getCollection().findOne(id);
+        if(one == null){
+            return null;
+        }
+        return (Map<String,Object>)one;
     }
 }

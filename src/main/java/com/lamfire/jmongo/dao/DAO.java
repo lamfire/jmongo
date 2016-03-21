@@ -120,4 +120,6 @@ public interface DAO<T, K> {
     public void addFieldValue(K id,String fieldName,Object value);
 
     public Object getFieldValue(K id,String fieldName);
+
+    public Map<String,Object> getAsMap(K id);
 }

@@ -13,6 +13,7 @@ import com.lamfire.utils.Threads;
 import com.mongodb.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -110,5 +111,10 @@ public class Main {
         User user = dao.get("00038");
         System.out.println(JSON.toJSONString(user));
 
+        DBObject dbo = dao.getCollection().findOne("00038");
+        System.out.println(dbo);
+
+        Map<String,Object> map = dao.getAsMap("00038");
+        System.out.println(map);
     }
 }

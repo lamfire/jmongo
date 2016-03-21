@@ -114,4 +114,10 @@ public interface DAO<T, K> {
 	public long distinctCount(Query<T> query,String distinctField);
 	
 	public long count(Aggregator aggregator);
+
+    public void setFieldValue(K id,String fieldName,Object value);
+
+    public void addFieldValue(K id,String fieldName,Object value);
+
+    public Object getFieldValue(K id,String fieldName);
 }

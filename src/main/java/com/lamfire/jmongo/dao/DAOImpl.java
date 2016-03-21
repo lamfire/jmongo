@@ -1,6 +1,5 @@
 package com.lamfire.jmongo.dao;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,16 +9,11 @@ import com.lamfire.jmongo.*;
 import com.lamfire.jmongo.mapping.MappedClass;
 import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.Mapping;
-import com.lamfire.jmongo.mapping.Mapper;
 import com.lamfire.jmongo.query.Query;
 import com.lamfire.jmongo.query.QueryResults;
 import com.lamfire.jmongo.query.UpdateOperations;
 import com.lamfire.jmongo.query.UpdateResults;
-import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
-import com.mongodb.Mongo;
-import com.mongodb.WriteConcern;
-import com.mongodb.WriteResult;
+import com.mongodb.*;
 
 /**
  * @author lamfire
@@ -324,4 +318,28 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         return ds.toDBObject(entity);
     }
 
+    public void addFieldValue(K id,String fieldName,Object value){
+        UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
+        up.disableValidation();
+        up.add(fieldName, value);
+        Key<T> key = new Key<T>(entityClazz, id);
+        getDatastore().update(key,up);
+    }
+
+    public void setFieldValue(K id,String fieldName,Object value){
+        UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
+        up.disableValidation();
+        up.set(fieldName,value);
+        Key<T> key = new Key<T>(entityClazz, id);
+        getDatastore().update(key,up);
+    }
+
+    public Object getFieldValue(K id,String fieldName){
+        DBObject one = getCollection().findOne(id);
+        if(one == null){
+            return null;
+        }
+        Object o =  one.get(fieldName);
+        return o;
+    }
 }

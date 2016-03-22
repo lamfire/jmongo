@@ -69,6 +69,5 @@ step 3 Using DAO template
     user = dao.get("10001");
 
     //query
-    dao = new UserDAO("USER2");
     List<User> users = dao.createQuery().asList();
 

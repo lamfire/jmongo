@@ -5,6 +5,8 @@ import com.demo.jmongo.dao.UserDAO;
 import com.demo.jmongo.entity.User;
 import com.lamfire.jmongo.JMongo;
 import com.lamfire.jmongo.Key;
+import com.lamfire.jmongo.dao.DAO;
+import com.lamfire.jmongo.dao.DAOFactory;
 import com.lamfire.jmongo.query.Query;
 import com.lamfire.jmongo.query.UpdateOperations;
 import com.lamfire.json.JSON;
@@ -104,17 +106,23 @@ public class Main {
 //        Object value = dao.getCollection().findOne("00038").get("uid");
 //        System.out.println(value);
 
-        dao.addFieldValue("00038", "uids", "123456789");
-        Object  obj = dao.getFieldValue("00038", "uids");
-        System.out.println(obj.getClass().getName() +" : " + obj);
+//        dao.addFieldValue("00038", "uids", "123456789");
+//        Object  obj = dao.getFieldValue("00038", "uids");
+//        System.out.println(obj.getClass().getName() +" : " + obj);
+//
+//        User user = dao.get("00038");
+//        System.out.println(JSON.toJSONString(user));
+//
+//        DBObject dbo = dao.getCollection().findOne("00038");
+//        System.out.println(dbo);
+//
+//        Map<String,Object> map = dao.getAsMap("00038");
+//        System.out.println(map);
 
-        User user = dao.get("00038");
-        System.out.println(JSON.toJSONString(user));
 
-        DBObject dbo = dao.getCollection().findOne("00038");
-        System.out.println(dbo);
-
-        Map<String,Object> map = dao.getAsMap("00038");
-        System.out.println(map);
+        for(int i=0;i<100;i++){
+        DAO<User,String> userDao = DAOFactory.take("default","test","User1",User.class);
+            System.out.println(userDao.count() + " -> " + userDao);
+        }
     }
 }

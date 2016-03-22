@@ -57,7 +57,7 @@ step 3 Using DAO template
     user.setId("10001");
     user.setAge(18);
     user.setUsername("lamfire");
-    user.setUsername("password");
+    user.setPassword("password");
 
     DAO<User,String> dao = DAOFactory.get("db1","test",User.class);
 

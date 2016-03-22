@@ -121,7 +121,7 @@ public class Main {
 
 
         for(int i=0;i<100;i++){
-        DAO<User,String> userDao = DAOFactory.take("default","test","User1",User.class);
+        DAO<User,String> userDao = DAOFactory.get("default","test","User1",User.class);
             System.out.println(userDao.count() + " -> " + userDao);
         }
     }

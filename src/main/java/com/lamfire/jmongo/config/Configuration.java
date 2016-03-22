@@ -13,7 +13,7 @@ import com.lamfire.jmongo.logger.Logger;
 
 public class Configuration {
 	private static final Logger LOGGER = Logger.getLogger(Configuration.class);
-	private static final String CONFIG_FILE = "mongo.properties";
+	private static final String CONFIG_FILE = "jmongo.properties";
 	private Map<String, MongoOpts> optsMap = new HashMap<String, MongoOpts>();
 	private Map<String, Map<String, String>> confMap = new HashMap<String, Map<String, String>>();
 	
@@ -100,7 +100,7 @@ public class Configuration {
 		String seeds = conf.get("servers");
 		
 		if(seeds == null){
-			throw new RuntimeException("the property '"+id+".servers' was required,please check config file 'mongo.properties'.");
+			throw new RuntimeException("the property '"+id+".servers' was required,please check config file 'jmongo.properties'.");
 		}
 		
 		try {

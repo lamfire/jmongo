@@ -107,8 +107,8 @@ public class Main {
 //        System.out.println(value);
 
 //        dao.addFieldValue("00038", "uids", "123456789");
-//        Object  obj = dao.getFieldValue("00038", "uids");
-//        System.out.println(obj.getClass().getName() +" : " + obj);
+        Object  obj = dao.getFieldValue("00038", "uids");
+        System.out.println(obj.getClass().getName() +" : " + obj);
 //
 //        User user = dao.get("00038");
 //        System.out.println(JSON.toJSONString(user));
@@ -120,9 +120,9 @@ public class Main {
 //        System.out.println(map);
 
 
-        for(int i=0;i<100;i++){
-            DAO<User,String> userDao = DAOFactory.get("default","test","User1",User.class);
-            System.out.println(userDao.count() + " -> " + userDao);
-        }
+//        for(int i=0;i<100;i++){
+//            DAO<User,String> userDao = DAOFactory.get("default","test","User1",User.class);
+//            System.out.println(userDao.count() + " -> " + userDao);
+//        }
     }
 }

@@ -332,7 +332,9 @@ public class DAOImpl<T, K> implements DAO<T, K> {
     }
 
     public Object getFieldValue(K id,String fieldName){
-        DBObject one = getCollection().findOne(id);
+        DBObject fields = new BasicDBObject();
+        fields.put(fieldName,1);
+        DBObject one = getCollection().findOne(id,fields);
         if(one == null){
             return null;
         }
@@ -342,6 +344,24 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 
     public Map<String,Object> getAsMap(K id){
         DBObject one = getCollection().findOne(id);
+        if(one == null){
+            return null;
+        }
+        return (Map<String,Object>)one;
+    }
+
+    public Map<String,Object> getAsMap(K id,String ... fields){
+        DBObject one = null;
+        if(fields != null){
+            DBObject fieldsObj = new BasicDBObject();
+            for(String f : fields){
+                fieldsObj.put(f,1);
+            }
+            one = getCollection().findOne(id,fieldsObj);
+        }else{
+            one = getCollection().findOne(id);
+        }
+
         if(one == null){
             return null;
         }

@@ -1,20 +1,13 @@
 package com.lamfire.jmongo.utils;
 
 import com.lamfire.jmongo.Datastore;
-import com.lamfire.jmongo.query.MorphiaIterator;
-import com.lamfire.jmongo.query.Query;
-import com.lamfire.jmongo.query.QueryImpl;
-import com.lamfire.jmongo.query.UpdateOperations;
-import com.lamfire.jmongo.query.UpdateOpsImpl;
+import com.lamfire.jmongo.query.*;
+import com.lamfire.jmongo.query.JMIterator;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-/**
- * Exposes driver related DBOBject stuff from Mapping objects
- * @author scotthernandez
- */
 
 public class Helper {
 	public static DBObject getCriteria(Query<?> q) {
@@ -38,7 +31,7 @@ public class Helper {
 	}
 	
 	public static DBCursor getCursor(Iterable<?> it) {
-		return ((MorphiaIterator<?,?>)it).getCursor();
+		return ((JMIterator<?,?>)it).getCursor();
 	}
 
 	public static DBObject getUpdateOperations(UpdateOperations<?> ops) {

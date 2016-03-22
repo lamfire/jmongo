@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.util.HashMap;
@@ -12,9 +9,6 @@ import com.lamfire.jmongo.utils.IterHelper;
 import com.lamfire.jmongo.utils.ReflectionUtils;
 import com.lamfire.jmongo.utils.IterHelper.MapIterCallback;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- */
 @SuppressWarnings({"unchecked"})
 public class MapOfValuesConverter extends TypeConverter {
 	private final DefaultConverters converters;

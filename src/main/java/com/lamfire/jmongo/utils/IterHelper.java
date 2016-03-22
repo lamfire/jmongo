@@ -8,13 +8,6 @@ import java.util.Map.Entry;
 
 import org.bson.BSONObject;
 
-/**
- * Helper to allow for optimizations for different types of Map/Collections
- * @author Scott Hernandez
- *
- * @param <T> The key type of the map
- * @param <V> The value type of the map/collection
- */
 public class IterHelper<T, V> {
 	@SuppressWarnings({ "unchecked" })
 	public void loopMap(Object x, MapIterCallback<T, V> iter) {

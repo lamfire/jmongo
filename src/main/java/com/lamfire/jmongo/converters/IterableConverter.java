@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.lang.reflect.Array;
@@ -13,11 +10,6 @@ import com.lamfire.jmongo.ObjectFactory;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 import com.lamfire.jmongo.utils.ReflectionUtils;
-
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * @author scotthernandez
- */
 
 @SuppressWarnings({"unchecked"})
 public class IterableConverter extends TypeConverter {

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.mapping.lazy;
 
 import com.lamfire.jmongo.logger.Logger;

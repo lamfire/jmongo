@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.mapping;
 
 import java.io.ByteArrayInputStream;
@@ -15,9 +12,6 @@ import java.util.zip.GZIPOutputStream;
 
 import org.bson.types.Binary;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- */
 public class Serializer
 {
 	/** serializes object to byte[] */

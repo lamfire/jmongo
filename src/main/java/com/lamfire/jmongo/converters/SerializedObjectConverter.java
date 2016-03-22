@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.io.IOException;
@@ -12,9 +9,6 @@ import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 import com.lamfire.jmongo.mapping.Serializer;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- */
 @SuppressWarnings("unchecked")
 public class SerializedObjectConverter extends TypeConverter {
 	@Override

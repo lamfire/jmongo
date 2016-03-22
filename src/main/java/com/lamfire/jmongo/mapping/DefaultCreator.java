@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.mapping;
 
 import java.lang.reflect.Constructor;
@@ -20,26 +17,17 @@ import com.mongodb.DBObject;
 public class DefaultCreator implements ObjectFactory {
 	private static final Logger log = Logger.getLogger(DefaultCreator.class);
 
-	/* (non-Javadoc)
-	 * @see com.google.code.jmongo.ObjectFactory#createInstance(java.lang.Class)
-	 */
 	public Object createInstance(Class clazz) { 
 		return createInst(clazz);
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.google.code.jmongo.ObjectFactory#createInstance(java.lang.Class, com.jmongo.DBObject)
-	 */
+
 	public Object createInstance(Class clazz, DBObject dbObj) {
 		Class c = getClass(dbObj);
 		if (c == null)
 			c = clazz;
 		return createInstance(c);	
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.google.code.jmongo.ObjectFactory#createInstance(com.google.code.jmongo.mapping.Mapper, com.google.code.jmongo.mapping.MappedField, com.jmongo.DBObject)
-	 */
+
 	public Object createInstance(Mapper mapr, MappedField mf, DBObject dbObj) {
 		Class c = getClass(dbObj);
 		if (c == null)

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import com.lamfire.jmongo.mapping.MappedField;
@@ -8,9 +5,6 @@ import com.lamfire.jmongo.mapping.Mapper;
 import com.lamfire.jmongo.mapping.MappingException;
 import com.mongodb.DBObject;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- */
 @SuppressWarnings({"unchecked"})
 public abstract class TypeConverter {
 	protected Mapper mapr;

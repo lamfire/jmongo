@@ -1,12 +1,5 @@
-/**
- * 
- */
 package com.lamfire.jmongo.mapping.lazy.proxy;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * 
- */
 @SuppressWarnings("unchecked")
 public class ProxyHelper {
 

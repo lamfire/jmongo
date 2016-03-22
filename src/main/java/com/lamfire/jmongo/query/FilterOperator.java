@@ -1,10 +1,5 @@
 package com.lamfire.jmongo.query;
 
-/**
- * 
- * @author Scott Hernandez
- *
- */
 public enum FilterOperator {
 	NEAR("$near"),
 	NEAR_SPHERE("$nearSphere"),

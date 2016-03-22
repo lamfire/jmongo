@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import org.bson.types.ObjectId;
@@ -8,10 +5,6 @@ import org.bson.types.ObjectId;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 
-/**
- * Convert to an ObjectId from string
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class ObjectIdConverter extends TypeConverter implements SimpleValueConverter{
 	

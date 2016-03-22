@@ -9,11 +9,7 @@ import java.lang.annotation.Target;
 
 import com.lamfire.jmongo.utils.IndexDirection;
 
-/**
- * Specified on fields that should be Indexed.
- * 
-  * @author Scott Hernandez
- */
+
 @Documented @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})

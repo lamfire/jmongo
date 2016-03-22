@@ -7,9 +7,6 @@ import org.bson.types.CodeWScope;
 import com.mongodb.DBObject;
 import com.mongodb.ReadPreference;
 
-/**
- * @author Scott Hernandez
- */
 public interface Query<T> extends QueryResults<T>, Cloneable {
 	/**
 	 * <p>Create a filter based on the specified condition and value.

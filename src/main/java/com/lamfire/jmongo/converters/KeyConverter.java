@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import com.lamfire.jmongo.Key;
@@ -8,10 +5,6 @@ import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 import com.mongodb.DBRef;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class KeyConverter extends TypeConverter {
 

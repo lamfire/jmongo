@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.util.Locale;
@@ -9,10 +6,6 @@ import java.util.StringTokenizer;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class LocaleConverter extends TypeConverter implements SimpleValueConverter {
 

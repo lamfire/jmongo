@@ -2,12 +2,6 @@ package com.lamfire.jmongo.query;
 
 import java.util.List;
 
-/** <p> 
- * 		A nicer interface to the update operations in monogodb. 
- *      All these operations happen at the server and can cause the server 
- *      and client version of the Entity to be different
- *  </p> 
- **/
 public interface UpdateOperations<T> {
 	/** sets the field value */
 	UpdateOperations<T> set(String fieldExpr, Object value);

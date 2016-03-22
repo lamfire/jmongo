@@ -1,10 +1,5 @@
 package com.lamfire.jmongo.query;
 
-/**
- * 
- * @author Scott Hernandez
- *
- */
 public enum UpdateOperator {
 	SET("$set"),
 	UNSET("$unset"),

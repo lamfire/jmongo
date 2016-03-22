@@ -5,12 +5,8 @@ import com.lamfire.jmongo.mapping.Mapper;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-/**
- * 
- * @author Scott Hernandez
- */
-public class MorphiaKeyIterator<T> extends MorphiaIterator<T, Key<T>>{
-	public MorphiaKeyIterator(DBCursor cursor, Mapper m, Class<T> clazz, String kind) {
+public class JMKeyIterator<T> extends JMIterator<T, Key<T>> {
+	public JMKeyIterator(DBCursor cursor, Mapper m, Class<T> clazz, String kind) {
 		super(cursor, m, clazz, kind, null);
 	}
 

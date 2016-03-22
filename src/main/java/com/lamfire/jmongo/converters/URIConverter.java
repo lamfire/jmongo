@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.net.URI;
@@ -8,9 +5,6 @@ import java.net.URI;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 
-/**
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class URIConverter extends TypeConverter implements SimpleValueConverter{
 	

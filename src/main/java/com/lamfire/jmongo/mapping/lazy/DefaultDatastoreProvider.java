@@ -2,12 +2,6 @@ package com.lamfire.jmongo.mapping.lazy;
 
 import com.lamfire.jmongo.Datastore;
 
-/**
- * Default implementation to be used in the assumtion that one Datastore per
- * classloader is the default wa to use Mapping. Might be discussable.
- * 
- * @author uwe schaefer
- */
 public class DefaultDatastoreProvider implements DatastoreProvider {
 	/**
 	 * 

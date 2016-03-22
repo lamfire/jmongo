@@ -1,11 +1,5 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- */
 public class ConverterNotFoundException extends RuntimeException {
 	
 	/**

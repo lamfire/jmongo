@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.sql.Timestamp;
@@ -9,9 +6,6 @@ import java.util.Date;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 
-/**
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class TimestampConverter extends DateConverter implements SimpleValueConverter{
 	

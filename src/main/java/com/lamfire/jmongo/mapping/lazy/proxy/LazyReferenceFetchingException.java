@@ -1,13 +1,7 @@
-/**
- * 
- */
 package com.lamfire.jmongo.mapping.lazy.proxy;
 
 import java.util.ConcurrentModificationException;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- */
 public class LazyReferenceFetchingException extends
 		ConcurrentModificationException {
 	/**

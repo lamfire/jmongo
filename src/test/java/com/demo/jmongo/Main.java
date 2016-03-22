@@ -92,37 +92,22 @@ public class Main {
 	}
 
     public static void main(String[] args){
-        UserDAO dao = new UserDAO();
-//        //dao.update("","","");
-//        UpdateOperations<User> up = dao.getDatastore().createUpdateOperations(User.class);
-//
-//        up.disableValidation();
-//        up.set("uid", "abcd");
-//        Key<User> key = new Key<User>(User.class, "00038");
-//        dao.getDatastore().update(key,up);
-//
-//        System.out.println(dao.count());
-//
-//        Object value = dao.getCollection().findOne("00038").get("uid");
-//        System.out.println(value);
+        DAO<User,String> dao = DAOFactory.get("default","test",User.class);
 
-//        dao.addFieldValue("00038", "uids", "123456789");
+        //single
+        dao.setFieldValue("00038", "testField", "aaaaa");
+        Object  val = dao.getFieldValue("00038", "testField");
+        System.out.println(val);
+
+        //array
+        dao.addFieldValue("00038", "uids", "123456789");
+        dao.addFieldValue("00038", "uids", "123456789000");
         Object  obj = dao.getFieldValue("00038", "uids");
-        System.out.println(obj.getClass().getName() +" : " + obj);
-//
-//        User user = dao.get("00038");
-//        System.out.println(JSON.toJSONString(user));
-//
-//        DBObject dbo = dao.getCollection().findOne("00038");
-//        System.out.println(dbo);
-//
-//        Map<String,Object> map = dao.getAsMap("00038");
-//        System.out.println(map);
+        System.out.println(obj);
 
+        //entity as map
+        Map<String,Object> map = dao.getAsMap("00038");
+        System.out.println(map);
 
-//        for(int i=0;i<100;i++){
-//            DAO<User,String> userDao = DAOFactory.get("default","test","User1",User.class);
-//            System.out.println(userDao.count() + " -> " + userDao);
-//        }
     }
 }

@@ -2,11 +2,7 @@ package com.lamfire.jmongo.mapping;
 
 import com.lamfire.jmongo.ObjectFactory;
 
-/**
- * Options to control mapping behavior.
- * 
- * @author Scott Hernandez
- */
+
 public class MapperOptions {
 	/** <p>Treat java transient fields as if they have <code>@Transient</code> on them</p> */
 	public boolean actLikeSerializer = false;

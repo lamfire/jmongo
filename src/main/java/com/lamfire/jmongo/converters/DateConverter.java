@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.util.Date;
@@ -8,10 +5,6 @@ import java.util.Date;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class DateConverter extends TypeConverter implements SimpleValueConverter{
 	

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.mapping;
 
 import java.lang.reflect.Modifier;

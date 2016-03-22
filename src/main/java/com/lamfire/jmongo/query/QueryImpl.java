@@ -248,7 +248,7 @@ public class QueryImpl<T> extends CriteriaContainerImpl implements Query<T>, Cri
 		if (log.isDebugEnabled())
 			log.debug("Getting cursor(" + dbColl.getName() + ")  for query:" + cursor.getQuery());
 
-		return new MorphiaIterator<T,T>(cursor, ds.getMapper(), clazz, dbColl.getName(), cache);
+		return new JMIterator<T,T>(cursor, ds.getMapper(), clazz, dbColl.getName(), cache);
 	}
 	
 
@@ -264,12 +264,12 @@ public class QueryImpl<T> extends CriteriaContainerImpl implements Query<T>, Cri
 
 		fields = oldFields;
 		includeFields = oldInclude;
-		return new MorphiaKeyIterator<T>(cursor, ds.getMapper(), clazz, dbColl.getName());
+		return new JMKeyIterator<T>(cursor, ds.getMapper(), clazz, dbColl.getName());
 	}
 	
 	public List<T> asList() {
 		List<T> results = new ArrayList<T>();
-		MorphiaIterator<T,T> iter = (MorphiaIterator<T,T>) fetch().iterator();
+		JMIterator<T,T> iter = (JMIterator<T,T>) fetch().iterator();
 		for(T ent : iter){
 			results.add(ent);
 		}

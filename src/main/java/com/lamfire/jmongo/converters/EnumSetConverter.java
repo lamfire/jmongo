@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.util.ArrayList;
@@ -10,10 +7,6 @@ import java.util.List;
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class EnumSetConverter extends TypeConverter implements SimpleValueConverter{	
 

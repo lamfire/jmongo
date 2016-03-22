@@ -8,12 +8,8 @@ import com.lamfire.jmongo.mapping.cache.EntityCache;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-/**
- * 
- * @author Scott Hernandez
- */
 @SuppressWarnings("unchecked")
-public class MorphiaIterator<T, V> implements Iterable<V>, Iterator<V>{
+public class JMIterator<T, V> implements Iterable<V>, Iterator<V>{
 	protected final Iterator<DBObject> wrapped;
 	protected final Mapper m;
 	protected final Class<T> clazz;
@@ -22,7 +18,7 @@ public class MorphiaIterator<T, V> implements Iterable<V>, Iterator<V>{
 	protected long  driverTime = 0;
 	protected long  mapperTime= 0;
 
-	public MorphiaIterator(Iterator<DBObject> it, Mapper m, Class<T> clazz, String kind, EntityCache cache) {
+	public JMIterator(Iterator<DBObject> it, Mapper m, Class<T> clazz, String kind, EntityCache cache) {
 		this.wrapped = it;
 		this.m = m;
 		this.clazz = clazz;

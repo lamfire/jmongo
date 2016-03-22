@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.mapping.lazy;
 
 import java.util.Collection;
@@ -8,9 +5,6 @@ import java.util.Map;
 
 import com.lamfire.jmongo.Key;
 
-/**
- * @author uwe schaefer
- */
 @SuppressWarnings("unchecked")
 public interface LazyProxyFactory {
 	<T> T createProxy(Class<T> targetClass, final Key<T> key,

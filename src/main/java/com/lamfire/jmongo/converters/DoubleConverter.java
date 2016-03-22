@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import java.util.ArrayList;
@@ -12,10 +9,6 @@ import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
 import com.lamfire.jmongo.utils.ReflectionUtils;
 
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * @author scotthernandez
- */
 @SuppressWarnings({"unchecked"})
 public class DoubleConverter extends TypeConverter implements SimpleValueConverter{
 

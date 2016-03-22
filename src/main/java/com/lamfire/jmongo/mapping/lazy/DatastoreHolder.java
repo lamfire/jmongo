@@ -2,9 +2,6 @@ package com.lamfire.jmongo.mapping.lazy;
 
 import com.lamfire.jmongo.Datastore;
 
-/**
- * for use with DatastoreProvider.Default
- */
 public final class DatastoreHolder {
 	private static final DatastoreHolder INSTANCE = new DatastoreHolder();
 

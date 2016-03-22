@@ -1,14 +1,8 @@
-/**
- * 
- */
 package com.lamfire.jmongo.converters;
 
 import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.MappingException;
-/**
- * @author Uwe Schaefer, (us@thomas-daily.de)
- * @author scotthernandez
- */
+
 @SuppressWarnings({"unchecked"})
 public class LongConverter extends TypeConverter implements SimpleValueConverter {
 	

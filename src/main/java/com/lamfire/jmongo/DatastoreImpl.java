@@ -834,6 +834,27 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		throwOnError(wc, wr);
 		return postSaveGetKey(entity, dbObj, dbColl, involvedObjects);
 	}
+
+	public synchronized  <T> Key<T> save(DBCollection dbColl, DBObject dbObj) {
+		return save(dbColl,dbObj,null);
+	}
+
+	public synchronized  <T> Key<T> save(DBCollection dbColl, DBObject dbObj, WriteConcern wc) {
+		WriteResult wr = null;
+		if (wc == null){
+			wr = dbColl.save(dbObj);
+		}else{
+			wr = dbColl.save(dbObj, wc);
+		}
+
+		throwOnError(wc, wr);
+
+		if (dbObj.get(Mapper.ID_KEY) == null)
+			throw new MappingException("Missing _id after save!");
+
+		Key<T> key = new Key<T>(dbColl.getName(), dbObj.get(Mapper.ID_KEY));
+		return key;
+	}
 	
 	protected <T> WriteResult tryVersionedUpdate(DBCollection dbColl, T entity, DBObject dbObj, WriteConcern wc, DB db, MappedClass mc) {
 		WriteResult wr = null;

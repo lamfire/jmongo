@@ -46,6 +46,7 @@ public class Configuration {
             InputStream input = Configuration.class.getClassLoader().getResourceAsStream(CONFIG_FILE);
             properties.load(input);
         }catch (Throwable t){
+			LOGGER.error("Cannot open configure file : " + CONFIG_FILE);
             t.printStackTrace();
         }
 		//Map<String,String> map = PropertiesUtils.loadAsMap(CONFIG_FILE, Configuration.class);

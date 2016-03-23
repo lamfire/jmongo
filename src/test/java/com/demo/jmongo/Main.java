@@ -91,7 +91,7 @@ public class Main {
         System.out.println((System.currentTimeMillis()-startAt));
 	}
 
-    public static void main(String[] args){
+    public static void main1(String[] args){
         DAO<User,String> dao = DAOFactory.get("default","test",User.class);
 
         //single
@@ -109,5 +109,18 @@ public class Main {
         Map<String,Object> map = dao.getAsMap("00038");
         System.out.println(map);
 
+    }
+
+    public static void main(String[] args) {
+        DAO<User,String> dao = DAOFactory.get("default","test",User.class);
+        Map<String,Object> o = new BasicDBObject();
+        o.put("_id","00037");
+        o.put("username","hayash");
+        o.put("password","123456");
+
+        Object id = dao.save(o).getId();
+        System.out.println("ID:"+id);
+
+        System.out.println(dao.count());
     }
 }

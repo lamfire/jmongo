@@ -67,8 +67,11 @@ public interface Datastore {
 
     <T> long getCount(String kind);
 
-	<T> long getCount(Query<T> query); 
-	
+	<T> long getCount(Query<T> query);
+
+	<T> Key<T> save(DBCollection dbColl, DBObject dbObj, WriteConcern wc);
+
+	<T> Key<T> save(DBCollection dbColl, DBObject dbObj);
 
     <T> Key<T> save(String kind, T entity);
 

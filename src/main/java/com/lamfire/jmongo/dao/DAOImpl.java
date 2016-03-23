@@ -367,4 +367,10 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         }
         return (Map<String,Object>)one;
     }
+
+	public Key<T> save(Map<String,Object> map){
+		DBObject obj = new BasicDBObject();
+		obj.putAll(map);
+		return getDatastore().save(getCollection(),obj);
+	}
 }

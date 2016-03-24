@@ -19,6 +19,13 @@ import com.mongodb.*;
 @SuppressWarnings("unchecked")
 public class DAOImpl<T, K> implements DAO<T, K> {
 	private static final Logger LOGGER = Logger.getLogger(DAOImpl.class);
+	private static DBObject OnleIdFields = new BasicDBObject();
+	static{
+		OnleIdFields.put(Mapper.ID_KEY,1);
+	}
+
+
+
     protected final String kind;
 	protected Class<T> entityClazz;
     protected MappedClass mappedClass;
@@ -158,7 +165,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	}
 
 	public boolean exists(K id) {
-		return exists(createQuery().field("_id").equal(id));
+		return getCollection().findOne(id,OnleIdFields)!=null;
 	}
 	
 

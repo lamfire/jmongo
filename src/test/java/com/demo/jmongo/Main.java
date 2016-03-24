@@ -125,5 +125,21 @@ public class Main {
 
         System.out.println(dao.exists("00037"));
         System.out.println(dao.exists("00031"));
+
+        DBObject d = new BasicDBObject();
+        d.put("_id",1);
+        System.out.println(dao.getCollection().findOne("000371",d));
+
+        long t = System.nanoTime();
+        for(int i=0;i<100;i++){
+            dao.exists("00037");
+        }
+        System.out.println(System.nanoTime() - t);
+
+        t = System.nanoTime();
+        for(int i=0;i<100;i++){
+            dao.getCollection().findOne("00037",d);
+        }
+        System.out.println(System.nanoTime() - t);
     }
 }

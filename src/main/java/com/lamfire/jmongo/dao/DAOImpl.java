@@ -6,6 +6,7 @@ import com.lamfire.jmongo.*;
 import com.lamfire.jmongo.mapping.MappedClass;
 import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.Mapping;
+import com.lamfire.jmongo.mapping.Mapper;
 import com.lamfire.jmongo.query.Query;
 import com.lamfire.jmongo.query.QueryResults;
 import com.lamfire.jmongo.query.UpdateOperations;
@@ -377,4 +378,11 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 		obj.putAll(map);
 		return getDatastore().save(getCollection(),obj);
 	}
+
+    public Key<T> save(K id,Map<String,Object> map){
+        DBObject obj = new BasicDBObject();
+        obj.put(Mapper.ID_KEY,id);
+        obj.putAll(map);
+        return getDatastore().save(getCollection(),obj);
+    }
 }

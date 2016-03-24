@@ -128,4 +128,6 @@ public interface DAO<T, K> {
     public Map<String,Object> getAsMap(K id,String ... fields);
 
 	public Key<T> save(Map<String,Object> map);
+
+    public Key<T> save(K id,Map<String,Object> map);
 }

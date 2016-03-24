@@ -122,5 +122,8 @@ public class Main {
         System.out.println("ID:"+id);
 
         System.out.println(dao.count());
+
+        System.out.println(dao.exists("00037"));
+        System.out.println(dao.exists("00031"));
     }
 }

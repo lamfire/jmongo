@@ -59,6 +59,8 @@ public interface DAO<T, K> {
 
 	public boolean exists(Query<T> q);
 
+	public boolean exists(K id);
+
 	public long count();
 
 	public long count(String key, Object value);

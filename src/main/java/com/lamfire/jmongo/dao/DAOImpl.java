@@ -155,6 +155,10 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	public List<K> findIds(Query<T> q) {
 		return (List<K>) keysToIds(q.asKeyList());
 	}
+
+	public boolean exists(K id) {
+		return exists(createQuery().field("_id").equal(id));
+	}
 	
 
 	public boolean exists(String key, Object value) {

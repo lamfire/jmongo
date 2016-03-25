@@ -1,23 +1,22 @@
 package com.demo.jmongo;
 
 
-import com.demo.jmongo.dao.UserDAO;
 import com.demo.jmongo.entity.User;
 import com.lamfire.jmongo.JMongo;
-import com.lamfire.utils.RandomUtils;
-import com.mongodb.*;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import com.lamfire.jmongo.MongoOpts;
+import com.lamfire.jmongo.dao.DAO;
+import com.lamfire.jmongo.dao.DAOFactory;
 
 
 public class DriverMain {
 
-	public static void main(String[] args) {
-        Mongo mongo = JMongo.getMongo("default");
-        DB db = mongo.getDB("test");
-        DBCollection dbCol = db.getCollection("User2");
-        System.out.println(dbCol.count());
-        System.out.println(dbCol.getIndexInfo());
-	}
+    public static void main(String[] args) throws Exception {
+        MongoOpts opts = new MongoOpts("testmongo");
+        opts.addHost("192.168.180.49:27000");
+        JMongo.register(opts);
+
+
+        DAO<User, String> dao = DAOFactory.get("testmongo", "testmongo", User.class);
+        System.out.println(dao.count());
+    }
 }

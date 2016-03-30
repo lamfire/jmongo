@@ -9,6 +9,8 @@ import com.lamfire.jmongo.utils.IndexDirection;
 public class User{
 	
 	@Id
+	private String id;
+
 	private String username;
 	
 	private String password;
@@ -57,4 +59,11 @@ public class User{
 		this.postion[1] = y;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 }

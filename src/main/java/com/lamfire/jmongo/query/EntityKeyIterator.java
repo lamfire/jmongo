@@ -5,8 +5,8 @@ import com.lamfire.jmongo.mapping.Mapper;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
-public class JMKeyIterator<T> extends JMIterator<T, Key<T>> {
-	public JMKeyIterator(DBCursor cursor, Mapper m, Class<T> clazz, String kind) {
+public class EntityKeyIterator<T> extends EntityMappedIterator<T, Key<T>> {
+	public EntityKeyIterator(DBCursor cursor, Mapper m, Class<T> clazz, String kind) {
 		super(cursor, m, clazz, kind, null);
 	}
 

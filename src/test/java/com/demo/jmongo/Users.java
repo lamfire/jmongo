@@ -17,6 +17,7 @@ public class Users {
         double x = Double.valueOf(RandomUtils.nextInt(100) +"." + (10000) +RandomUtils.nextInt(99999) );
         double y = Double.valueOf((RandomUtils.nextInt(180)) +"." + (10000) +RandomUtils.nextInt(99999) );
         User user = new User();
+        user.setId(PUID.puidAsString());
         user.setAge(RandomUtils.nextInt(99));
         user.setUsername(PUID.puidAsString());
         user.setPostion(x, y);

@@ -2,7 +2,7 @@ package com.lamfire.jmongo.utils;
 
 import com.lamfire.jmongo.Datastore;
 import com.lamfire.jmongo.query.*;
-import com.lamfire.jmongo.query.JMIterator;
+import com.lamfire.jmongo.query.EntityMappedIterator;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -31,7 +31,7 @@ public class Helper {
 	}
 	
 	public static DBCursor getCursor(Iterable<?> it) {
-		return ((JMIterator<?,?>)it).getCursor();
+		return ((EntityMappedIterator<?,?>)it).getCursor();
 	}
 
 	public static DBObject getUpdateOperations(UpdateOperations<?> ops) {

@@ -14,6 +14,7 @@ import com.lamfire.utils.RandomUtils;
 import com.lamfire.utils.Threads;
 import com.mongodb.*;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -111,7 +112,7 @@ public class Main {
 
     }
 
-    public static void main(String[] args) {
+    public static void main2(String[] args) {
         DAO<User,String> dao = DAOFactory.get("default","test",User.class);
         Map<String,Object> o = new BasicDBObject();
         o.put("_id","00037");
@@ -141,5 +142,22 @@ public class Main {
             dao.getCollection().findOne("00037",d);
         }
         System.out.println(System.nanoTime() - t);
+    }
+
+    public static void main(String[] args) {
+        DAO<User,String> dao = DAOFactory.get("default","test",User.class);
+        Query<User> query = dao.createQuery();
+
+        query.field("username").equal("hayash").excludeFields("password");
+
+        Iterable<User> users = query.asList();
+        for(User u  :users){
+            System.out.println(JSON.toJSONString(u));
+        }
+
+        Iterable<Map<String,Object>> result = query.fetchOriginal();
+        for(Map<String,Object> e : result){
+            System.out.println(e);
+        }
     }
 }

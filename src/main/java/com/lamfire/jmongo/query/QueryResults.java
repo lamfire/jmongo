@@ -2,6 +2,7 @@ package com.lamfire.jmongo.query;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.lamfire.jmongo.Key;
 
@@ -38,6 +39,8 @@ public interface QueryResults<T>  extends Iterable<T> {
 	 * Query.fetch().iterator() is identical to Query.iterator().
 	 */
 	Iterable<T> fetch();
+
+	Iterable<Map<String,Object>> fetchOriginal();
 	
 	/**
 	 * Execute the query and get only the ids of the results.  This is more efficient than

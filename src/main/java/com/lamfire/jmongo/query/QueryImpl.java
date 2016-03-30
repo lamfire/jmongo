@@ -241,15 +241,23 @@ public class QueryImpl<T> extends CriteriaContainerImpl implements Query<T>, Cri
 		
 		return cursor;
 	}
-	
+
+	public Iterable<Map<String,Object>> fetchOriginal() {
+		DBCursor cursor = prepareCursor();
+		if (log.isDebugEnabled())
+			log.debug("Getting cursor(" + dbColl.getName() + ")  for query:" + cursor.getQuery());
+
+		return new EntityNotMappedIterator(cursor);
+	}
 
 	public Iterable<T> fetch() {
 		DBCursor cursor = prepareCursor();
 		if (log.isDebugEnabled())
 			log.debug("Getting cursor(" + dbColl.getName() + ")  for query:" + cursor.getQuery());
 
-		return new JMIterator<T,T>(cursor, ds.getMapper(), clazz, dbColl.getName(), cache);
+		return new EntityMappedIterator<T,T>(cursor, ds.getMapper(), clazz, dbColl.getName(), cache);
 	}
+
 	
 
 	public Iterable<Key<T>> fetchKeys() {
@@ -264,12 +272,12 @@ public class QueryImpl<T> extends CriteriaContainerImpl implements Query<T>, Cri
 
 		fields = oldFields;
 		includeFields = oldInclude;
-		return new JMKeyIterator<T>(cursor, ds.getMapper(), clazz, dbColl.getName());
+		return new EntityKeyIterator<T>(cursor, ds.getMapper(), clazz, dbColl.getName());
 	}
 	
 	public List<T> asList() {
 		List<T> results = new ArrayList<T>();
-		JMIterator<T,T> iter = (JMIterator<T,T>) fetch().iterator();
+		EntityMappedIterator<T,T> iter = (EntityMappedIterator<T,T>) fetch().iterator();
 		for(T ent : iter){
 			results.add(ent);
 		}

@@ -8,7 +8,7 @@ import com.lamfire.jmongo.annotations.Property;
 import com.lamfire.jmongo.annotations.Transient;
 import com.lamfire.jmongo.mapping.Mapper;
 import com.lamfire.jmongo.mapping.cache.EntityCache;
-import com.lamfire.jmongo.query.JMIterator;
+import com.lamfire.jmongo.query.EntityMappedIterator;
 import com.lamfire.jmongo.query.Query;
 import com.lamfire.jmongo.query.QueryImpl;
 import com.mongodb.DBObject;
@@ -44,7 +44,7 @@ public class MapreduceResults<T> implements Iterable<T> {
 	
 	//Inline stuff
 	public Iterator<T> getInlineResults() { 
-		return new JMIterator<T, T>((Iterator<DBObject>) rawResults.get("results"), mapr, clazz, null, cache);
+		return new EntityMappedIterator<T, T>((Iterator<DBObject>) rawResults.get("results"), mapr, clazz, null, cache);
 	}
 	
 	String getOutputCollectionName(){ return outColl; }

@@ -71,3 +71,29 @@ step 3 Using DAO template
     //query
     List<User> users = dao.createQuery().asList();
 
+No use configure file
+------------------
+    //register mongodb host
+    MongoOpts opts = new MongoOpts("db1");
+    opts.addHost("192.168.180.49:27000");
+    JMongo.register(opts);
+
+    //new entity instance
+    User user = new User();
+    user.setId("10001");
+    user.setAge(18);
+    user.setUsername("lamfire");
+    user.setPassword("password");
+
+    //get dao instance
+    DAO<User,String> dao = DAOFactory.get("db1","test",User.class);
+
+    //save
+    dao.save(user);
+    System.out.println(dao.count());
+
+    //get
+    user = dao.get("10001");
+
+    //query
+    List<User> users = dao.createQuery().asList();

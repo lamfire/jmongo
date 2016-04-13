@@ -332,7 +332,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         up.disableValidation();
         up.add(fieldName, value);
         Key<T> key = new Key<T>(entityClazz, id);
-        getDatastore().update(key,up);
+        getDatastore().update(kind,key,up);
     }
 
     public void setFieldValue(K id,String fieldName,Object value){
@@ -340,7 +340,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         up.disableValidation();
         up.set(fieldName,value);
         Key<T> key = new Key<T>(entityClazz, id);
-        getDatastore().update(key,up);
+        getDatastore().update(kind,key,up);
     }
 
     public Object getFieldValue(K id,String fieldName){

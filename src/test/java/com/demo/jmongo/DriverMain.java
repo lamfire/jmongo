@@ -16,7 +16,16 @@ public class DriverMain {
         JMongo.register(opts);
 
 
-        DAO<User, String> dao = DAOFactory.get("testmongo", "testmongo", User.class);
+        DAO<User, String> dao = DAOFactory.get("testmongo", "testmongo","User2", User.class);
         System.out.println(dao.count());
+        String uid = "00001";
+        User user = new User();
+        user.setId(uid);
+        dao.save(user);
+
+        dao.setFieldValue(uid,"f1","f1");
+        dao.setFieldValue(uid,"f2","f2");
+
+        System.out.println(dao.getAsMap(uid));
     }
 }

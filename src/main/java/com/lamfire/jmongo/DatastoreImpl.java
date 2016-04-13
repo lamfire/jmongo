@@ -966,12 +966,19 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 		return updateFirst(createQuery(clazz).disableValidation().filter(Mapper.ID_KEY, key.getId()), ops);
 	}
 
-    public <T> UpdateResults<T> update(String kind,Key<T> key, UpdateOperations<T> ops) {
-        Class<T> clazz = (Class<T>) key.getKindClass();
-        if (clazz == null)
-            clazz = (Class<T>) mapper.getClassFromKind(key.getKind());
-        return updateFirst(createQuery(kind,clazz).disableValidation().filter(Mapper.ID_KEY, key.getId()), ops);
-    }
+	public <T> UpdateResults<T> update(String kind,Key<T> key, UpdateOperations<T> ops) {
+		Class<T> clazz = (Class<T>) key.getKindClass();
+		if (clazz == null)
+			clazz = (Class<T>) mapper.getClassFromKind(key.getKind());
+		return updateFirst(createQuery(kind,clazz).disableValidation().filter(Mapper.ID_KEY, key.getId()), ops,true);
+	}
+
+	public <T> UpdateResults<T> update(String kind,Key<T> key, UpdateOperations<T> ops,boolean createIfMissing) {
+		Class<T> clazz = (Class<T>) key.getKindClass();
+		if (clazz == null)
+			clazz = (Class<T>) mapper.getClassFromKind(key.getKind());
+		return updateFirst(createQuery(kind,clazz).disableValidation().filter(Mapper.ID_KEY, key.getId()), ops,createIfMissing);
+	}
 
     public <T> UpdateResults<T> update(Query<T> query, UpdateOperations<T> ops) {
 		return update(query, ops, false, true);

@@ -102,6 +102,8 @@ public interface Datastore {
 	<T> UpdateResults<T> update(Key<T> key, UpdateOperations<T> ops);
 
     <T> UpdateResults<T> update(String kind,Key<T> key, UpdateOperations<T> ops);
+
+	<T> UpdateResults<T> update(String kind,Key<T> key, UpdateOperations<T> ops,boolean createIfMissing);
 	
 	/** updates all entities found with the operations; this is an atomic operation per entity*/
 	<T> UpdateResults<T> update(Query<T> query, UpdateOperations<T> ops);

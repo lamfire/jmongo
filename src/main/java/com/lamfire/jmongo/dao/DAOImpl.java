@@ -328,20 +328,28 @@ public class DAOImpl<T, K> implements DAO<T, K> {
     }
 
     public void addFieldValue(K id,String fieldName,Object value){
-        UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
-        up.disableValidation();
-        up.add(fieldName, value);
-        Key<T> key = new Key<T>(entityClazz, id);
-        getDatastore().update(kind,key,up);
+		addFieldValue(id,fieldName,value,true);
     }
 
     public void setFieldValue(K id,String fieldName,Object value){
-        UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
-        up.disableValidation();
-        up.set(fieldName,value);
-        Key<T> key = new Key<T>(entityClazz, id);
-        getDatastore().update(kind,key,up);
+		setFieldValue(id,fieldName,value,true);
     }
+
+	public void addFieldValue(K id,String fieldName,Object value,boolean createIfMissing){
+		UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
+		up.disableValidation();
+		up.add(fieldName, value);
+		Key<T> key = new Key<T>(entityClazz, id);
+		getDatastore().update(kind,key,up,createIfMissing);
+	}
+
+	public void setFieldValue(K id,String fieldName,Object value,boolean createIfMissing){
+		UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
+		up.disableValidation();
+		up.set(fieldName,value);
+		Key<T> key = new Key<T>(entityClazz, id);
+		getDatastore().update(kind,key,up,createIfMissing);
+	}
 
     public Object getFieldValue(K id,String fieldName){
         DBObject fields = new BasicDBObject();

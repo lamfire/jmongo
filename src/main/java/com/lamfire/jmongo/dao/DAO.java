@@ -121,6 +121,10 @@ public interface DAO<T, K> {
 
     public void addFieldValue(K id,String fieldName,Object value);
 
+	public void setFieldValue(K id,String fieldName,Object value,boolean createIfMissing);
+
+	public void addFieldValue(K id,String fieldName,Object value,boolean createIfMissing);
+
     public Object getFieldValue(K id,String fieldName);
 
     public Map<String,Object> getAsMap(K id);

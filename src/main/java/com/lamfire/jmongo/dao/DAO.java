@@ -1,5 +1,6 @@
 package com.lamfire.jmongo.dao;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -122,6 +123,12 @@ public interface DAO<T, K> {
     public void addFieldValue(K id,String fieldName,Object value);
 
 	public void removeField(K id,String fieldName);
+
+	public void removeFieldValue(K id,String fieldName,Object value);
+
+	public void removeFieldValues(K id,String fieldName,Object ... values);
+
+	public void removeFieldValues(K id,String fieldName,Collection<?> values);
 
 	public void removeFirstFieldValue(K id,String fieldName);
 

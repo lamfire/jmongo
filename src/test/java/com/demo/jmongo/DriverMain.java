@@ -24,5 +24,8 @@ public class DriverMain {
         dao.setFieldValue(uid,"f2","f2");
 
         System.out.println(dao.getAsMap(uid));
+
+        dao.removeField(uid,"f1");
+        System.out.println(dao.getAsMap(uid));
     }
 }

@@ -351,6 +351,30 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 		getDatastore().update(kind,key,up,createIfMissing);
 	}
 
+	public void removeField(K id,String fieldName){
+		UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
+		up.disableValidation();
+		up.unset(fieldName);
+		Key<T> key = new Key<T>(entityClazz, id);
+		getDatastore().update(kind,key,up,false);
+	}
+
+	public void removeFirstFieldValue(K id,String fieldName){
+		UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
+		up.disableValidation();
+		up.removeFirst(fieldName);
+		Key<T> key = new Key<T>(entityClazz, id);
+		getDatastore().update(kind,key,up,false);
+	}
+
+	public void removeLastFieldValue(K id,String fieldName){
+		UpdateOperations<T> up = getDatastore().createUpdateOperations(entityClazz);
+		up.disableValidation();
+		up.removeLast(fieldName);
+		Key<T> key = new Key<T>(entityClazz, id);
+		getDatastore().update(kind,key,up,false);
+	}
+
     public Object getFieldValue(K id,String fieldName){
         DBObject fields = new BasicDBObject();
         fields.put(fieldName,1);

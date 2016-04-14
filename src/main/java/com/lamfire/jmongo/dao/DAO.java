@@ -121,6 +121,12 @@ public interface DAO<T, K> {
 
     public void addFieldValue(K id,String fieldName,Object value);
 
+	public void removeField(K id,String fieldName);
+
+	public void removeFirstFieldValue(K id,String fieldName);
+
+	public void removeLastFieldValue(K id,String fieldName);
+
 	public void setFieldValue(K id,String fieldName,Object value,boolean createIfMissing);
 
 	public void addFieldValue(K id,String fieldName,Object value,boolean createIfMissing);

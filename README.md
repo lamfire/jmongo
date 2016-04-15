@@ -76,7 +76,7 @@ No use configure file
     //register mongodb host
     MongoOpts opts = new MongoOpts("db1");
     opts.addHost("192.168.180.49:27000");
-    JMongo.register(opts);
+    JMongoRegistry.getInstance().register(opts);
 
     //new entity instance
     User user = new User();

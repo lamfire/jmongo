@@ -3,6 +3,7 @@ package com.demo.jmongo;
 
 import com.demo.jmongo.entity.User;
 import com.lamfire.jmongo.JMongo;
+import com.lamfire.jmongo.JMongoRegistry;
 import com.lamfire.jmongo.MongoOpts;
 import com.lamfire.jmongo.dao.DAO;
 import com.lamfire.jmongo.dao.DAOFactory;
@@ -13,7 +14,7 @@ public class DriverMain {
     public static void main(String[] args) throws Exception {
         MongoOpts opts = new MongoOpts("testmongo");
         opts.addHost("192.168.180.49:27000");
-        JMongo.register(opts);
+        JMongoRegistry.getInstance().register(opts);
 
 
         DAO<User, String> dao = DAOFactory.get("testmongo", "testmongo","User4", User.class);

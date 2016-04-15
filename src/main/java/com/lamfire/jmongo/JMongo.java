@@ -13,32 +13,16 @@ import com.mongodb.WriteConcern;
 public class JMongo {
 	private static final Logger LOGGER = Logger.getLogger(JMongo.class);
 	private static final Map<String, Mapping> mappings = new HashMap<String, Mapping>();
-	private static Map<String, Mongo> pool = new HashMap<String, Mongo>();
-	
-	public static synchronized Mongo register(MongoOpts opts){
-		if(opts == null){
-			throw new RuntimeException("the parameter 'MongoOpts' cannot be null.");
-		}
-		String id = opts.getId();
-		Mongo mongo = pool.get(id);
-		if(mongo != null){
-			return mongo;
-		}
-		mongo =  new Mongo(opts.seeds,opts.options);
-        mongo.setReadPreference(ReadPreference.secondaryPreferred());
-        mongo.setWriteConcern(WriteConcern.NORMAL);
-		pool.put(id, mongo);
-		return mongo;
-	}
+
 
 	public static synchronized Mongo getMongo(String id){
-		Mongo mongo =  pool.get(id);
+		Mongo mongo =  JMongoRegistry.getInstance().lookup(id);
 		if(mongo == null){
 			MongoOpts opts = Configuration.getInstance().getMongoOpts(id);
-			if(opts == null){
-			    throw new RuntimeException("The id["+id+"] settings not found at 'jmongo.properties'");
+			if(opts == null) {
+				throw new RuntimeException("The id[" + id + "] settings not found at 'jmongo.properties'");
 			}
-            mongo = register(opts);
+			mongo =  JMongoRegistry.getInstance().register(opts);
 		}
 		return mongo;
 	}

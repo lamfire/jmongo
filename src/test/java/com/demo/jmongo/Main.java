@@ -69,7 +69,7 @@ public class Main {
         monitor.startup();
         for(int i=0;i<10000000;i++){
             UserDAO dao = new UserDAO("db1","USER_BIG");
-            dao.save(Users.getUser());
+            dao.save(Users.randomUser());
             monitor.increment();
         }
 
@@ -78,7 +78,7 @@ public class Main {
 	public static void test(String[] args) {
         long startAt = System.currentTimeMillis();
         UserDAO dao = new UserDAO("db1","USER_BIG");
-        User user = Users.getUser();
+        User user = Users.randomUser();
         System.out.println(JSON.toJSONString(user));
         dao.save(user);
 

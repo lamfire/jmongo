@@ -6,6 +6,7 @@ import com.lamfire.jmongo.*;
 import com.lamfire.jmongo.mapping.MappedClass;
 import com.lamfire.jmongo.logger.Logger;
 import com.lamfire.jmongo.Mapping;
+import com.lamfire.jmongo.mapping.MappedField;
 import com.lamfire.jmongo.mapping.Mapper;
 import com.lamfire.jmongo.query.Query;
 import com.lamfire.jmongo.query.QueryResults;
@@ -100,13 +101,18 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 	
 	public UpdateResults<T> update(K k, UpdateOperations<T> ops) {
 		Key<T> key = new Key<T>(entityClazz, k);
-		return ds.update(key, ops);
+		return ds.update(kind,key, ops);
 	}
 	
 	public UpdateResults<T> update(K k, String fieldName,Object value) {
 		Key<T> key = new Key<T>(entityClazz, k);
-		UpdateOperations<T> ops = this.ds.createUpdateOperations(entityClazz).set(fieldName, value);
-		return ds.update(key, ops);
+		String storeFieldName = fieldName;
+		MappedField field = this.mappedClass.getMappedFieldByJavaField(fieldName);
+		if(field != null){
+			storeFieldName = field.getNameToStore();
+		}
+		UpdateOperations<T> ops = this.ds.createUpdateOperations(entityClazz).set(storeFieldName, value);
+		return ds.update(kind,key, ops);
 	}
 	
 	public UpdateResults<T> update(K k, Map<String,Object> fieldAndValMap) {
@@ -115,7 +121,7 @@ public class DAOImpl<T, K> implements DAO<T, K> {
 		for(Map.Entry<String,Object> e : fieldAndValMap.entrySet()){
 			ops.set(e.getKey(), e.getValue());
 		}
-		return ds.update(key, ops);
+		return ds.update(kind,key, ops);
 	}
 
 	public WriteResult delete(T entity) {

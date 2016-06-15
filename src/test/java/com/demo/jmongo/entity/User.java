@@ -3,6 +3,7 @@ package com.demo.jmongo.entity;
 import com.lamfire.jmongo.annotations.Entity;
 import com.lamfire.jmongo.annotations.Id;
 import com.lamfire.jmongo.annotations.Indexed;
+import com.lamfire.jmongo.annotations.Property;
 import com.lamfire.jmongo.utils.IndexDirection;
 
 @Entity
@@ -11,6 +12,7 @@ public class User{
 	@Id
 	private String id;
 
+	@Property(value="user_name")
 	private String username;
 	
 	private String password;

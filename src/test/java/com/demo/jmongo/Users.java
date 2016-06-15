@@ -13,7 +13,7 @@ import com.lamfire.utils.RandomUtils;
  */
 public class Users {
 
-    public static User getUser(){
+    public static User randomUser(){
         double x = Double.valueOf(RandomUtils.nextInt(100) +"." + (10000) +RandomUtils.nextInt(99999) );
         double y = Double.valueOf((RandomUtils.nextInt(180)) +"." + (10000) +RandomUtils.nextInt(99999) );
         User user = new User();

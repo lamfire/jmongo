@@ -307,29 +307,45 @@ public class DatastoreImpl implements Datastore, AdvancedDatastore {
 			return;
 		
 		//skip embedded types
-		if (mc.getEmbeddedAnnotation() != null && (parentMCs == null || parentMCs.isEmpty()))
+		if (mc.getEmbeddedAnnotation() != null && (parentMCs == null || parentMCs.isEmpty())) {
 			return;
+		}
+
+		//Ensure index from class annotation
+		ArrayList<Annotation> idexs = mc.getAnnotations(Index.class);
+		if (idexs != null) {
+			for (Annotation ann : idexs) {
+				Index idx = (Index) ann;
+				if (idx != null && idx.value() != null){
+					BasicDBObject fields = QueryImpl.parseFieldsString(idx.value(), mc.getClazz(), mapper, !idx.disableValidation());
+					ensureIndex(kind, mc.getClazz(), idx.name(), fields, idx.unique(), idx.dropDups(), idx.background() ? idx.background() : background, idx.sparse() ? idx.sparse() : false);
+				}
+			}
+		}
 
 		//Ensure indexes from class annotation
 		ArrayList<Annotation> idxs = mc.getAnnotations(Indexes.class);
-		if (idxs != null)
-			for(Annotation ann : idxs) {
+		if (idxs != null) {
+			for (Annotation ann : idxs) {
 				Indexes idx = (Indexes) ann;
-				if (idx != null && idx.value() != null && idx.value().length > 0)
-					for(Index index : idx.value()) {
-						BasicDBObject fields = QueryImpl.parseFieldsString(index.value(), mc.getClazz(), mapper, !index.disableValidation());
-						ensureIndex(kind,mc.getClazz(), index.name(), fields, index.unique(), index.dropDups(), index.background() ? index.background() : background, index.sparse() ? index.sparse() : false);
-					}
+				if (idx != null && idx.value() != null){
+					BasicDBObject fields = QueryImpl.parseFieldsString(idx.value(), mc.getClazz(), mapper, !idx.disableValidation());
+					ensureIndex(kind, mc.getClazz(), idx.name(), fields, idx.unique(), idx.dropDups(), idx.background() ? idx.background() : background, idx.sparse() ? idx.sparse() : false);
+				}
 			}
-		//Ensure indexes from field annotations, and embedded entities
+		}
+
+		//Ensure indexed from field annotations, and embedded entities
 		for (MappedField mf : mc.getPersistenceFields()) {
 			if (mf.hasAnnotation(Indexed.class)) {
 				Indexed index = mf.getAnnotation(Indexed.class);
 				StringBuilder field = new StringBuilder();
 				Class<?> indexedClass = (parentMCs.isEmpty() ? mc : parentMCs.get(0)).getClazz();
-				if (!parentMCs.isEmpty())
-					for(MappedField pmf : parentMFs)
+				if (!parentMCs.isEmpty()) {
+					for (MappedField pmf : parentMFs) {
 						field.append(pmf.getNameToStore()).append(".");
+					}
+				}
 				
 				field.append(mf.getNameToStore());
 				

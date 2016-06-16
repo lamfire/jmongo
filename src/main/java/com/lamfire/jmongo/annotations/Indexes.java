@@ -10,6 +10,14 @@ import java.lang.annotation.Target;
 @Documented @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
+
+
 public @interface Indexes {
-	Index[] value();
+	String name() default "";
+	String value();
+	boolean dropDups() default false;
+	boolean background() default false;
+	boolean sparse() default false;
+	boolean disableValidation() default false;
+	boolean unique() default false;
 }

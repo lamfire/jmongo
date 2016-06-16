@@ -49,7 +49,7 @@ public class MappedClass {
 	// private Polymorphic polymorphicAn;
 
 	/** Annotations we are interested in looking for. */
-	public static List<Class<? extends Annotation>> interestingAnnotations = new ArrayList<Class<? extends Annotation>>(Arrays.asList(Embedded.class, Entity.class,Polymorphic.class, EntityListeners.class, Version.class, Converters.class, Indexes.class));
+	public static final List<Class<? extends Annotation>> interestingAnnotations = new ArrayList<Class<? extends Annotation>>(Arrays.asList(Embedded.class, Entity.class,Polymorphic.class, EntityListeners.class, Version.class, Converters.class, Indexes.class,Index.class));
 	/** Annotations interesting for life-cycle events */
 	private static Class<? extends Annotation>[] lifecycleAnnotations = new Class[] { PrePersist.class, PreSave.class, PostPersist.class, PreLoad.class, PostLoad.class };
 

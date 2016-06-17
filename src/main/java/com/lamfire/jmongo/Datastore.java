@@ -15,6 +15,8 @@ import com.mongodb.*;
 public interface Datastore {
     String getName();
 
+	void authenticate(String username,char[] password);
+
 	<T> Key<T> getKey(T entity);
 
 	Key<?> exists(Object keyOrEntity);

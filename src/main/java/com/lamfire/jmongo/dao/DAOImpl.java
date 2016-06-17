@@ -57,6 +57,28 @@ public class DAOImpl<T, K> implements DAO<T, K> {
         ensureIndexes();
 	}
 
+	public DAOImpl(Mongo mongo, Mapping mapping, String dbName,String username,String password,Class<T> entityClass,String kind) {
+		this.mongo = mongo;
+		this.mapping = mapping;
+		this.dbName = dbName;
+		this.entityClazz = entityClass;
+		this.mappedClass =mapping.getMapper().getMappedClass(entityClass);
+		this.kind = kind;
+		this.ds  = new DatastoreImpl(mapping.getMapper(), mongo, dbName,username,password.toCharArray());
+		ensureIndexes();
+	}
+
+	public DAOImpl(Mongo mongo, Mapping mapping, String dbName,String username,String password,Class<T> entityClass) {
+		this.mongo = mongo;
+		this.mapping = mapping;
+		this.dbName = dbName;
+		this.entityClazz = entityClass;
+		this.mappedClass =mapping.getMapper().getMappedClass(entityClass);
+		this.kind = mappedClass.getCollectionName();
+		this.ds  = new DatastoreImpl(mapping.getMapper(), mongo, dbName,username,password.toCharArray());
+		ensureIndexes();
+	}
+
 	protected List<?> keysToIds(List<Key<T>> keys) {
 		ArrayList ids = new ArrayList(keys.size() * 2);
 		for (Key<T> key : keys)

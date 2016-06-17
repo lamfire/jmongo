@@ -31,4 +31,21 @@ public class DAOFactory {
         String kind = JMongo.getMapping(db).getMapper().getMappedClass(entityClass).getCollectionName();
         return get(server,db,kind,entityClass);
     }
+
+    public synchronized static <T,K> DAO<T,K>  get(String server,String db,String username,String password,String kind,Class<T> entityClass){
+        String key = String.format("%s-%s-%s",server,db,kind);
+        DAO<T,K> dao = (DAO<T,K>)daos.get(key);
+        if(dao != null){
+            return dao;
+        }
+
+        dao = new DAOImpl<T, K>(JMongo.getMongo(server),JMongo.getMapping(db),db,username,password,entityClass,kind);
+        daos.put(key,dao);
+        return dao;
+    }
+
+    public static <T,K> DAO<T,K>  get(String server,String db,String username,String password,Class<T> entityClass){
+        String kind = JMongo.getMapping(db).getMapper().getMappedClass(entityClass).getCollectionName();
+        return get(server,db,username,password,kind,entityClass);
+    }
 }

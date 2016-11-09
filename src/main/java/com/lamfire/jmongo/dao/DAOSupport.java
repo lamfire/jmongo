@@ -14,4 +14,12 @@ public abstract class DAOSupport<E,K> extends DAOImpl<E,K>{
 		super(JMongo.getMongo(mongoName), JMongo.getMapping(dbName),dbName,clazz);
 	}
 
+    public DAOSupport(String mongoName,String dbName,String user,String password,Class<E> clazz,String kind) {
+        super(JMongo.getMongo(mongoName), JMongo.getMapping(dbName),dbName,user,password,clazz,kind);
+    }
+
+    public DAOSupport(String mongoName,String dbName,String user,String password,Class<E> clazz) {
+        super(JMongo.getMongo(mongoName), JMongo.getMapping(dbName),dbName,user,password,clazz);
+    }
+
 }
